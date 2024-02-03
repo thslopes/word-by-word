@@ -1,4 +1,4 @@
-const words =
+let words =
   [
     { "word": "apple", "translation": "maçã", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0, },
     { "word": "book", "translation": "livro", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1, },
