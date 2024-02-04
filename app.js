@@ -158,3 +158,5 @@ function saveData() {
 let idx = 0;
 loadData();
 loadDash();
+
+document.documentElement.requestFullscreen();
