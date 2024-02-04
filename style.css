@@ -1,11 +1,10 @@
-/* Base styles */
 .board {
   height: 100vh;
 }
 
 .status {
-  margin: 0 auto; /* Center headings */
-  height: 30vh;
+  margin: 0 auto;
+  height: 15vh;
 }
 
 .option {
@@ -19,13 +18,11 @@
 
 a {
     text-decoration: none;
-    font-size: large;
 }
 
 .word {
   text-decoration: none;
-  font-size: larger;
-  height: 20vh;
+  height: 15vh;
 }
 
 div {
