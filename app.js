@@ -146,6 +146,11 @@ function loadData() {
   }
 }
 
+function loadItWords() {
+  words = itWords;
+  saveData();
+}
+
 function saveData() {
   localStorage.setItem("words", JSON.stringify(words));
 }
