@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Expires" content="0">
-    <title>Word by Word</title>
-    <link type="text/css" rel="stylesheet" href="./style.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Expires" content="0">
+  <title>Word by Word</title>
+  <link type="text/css" rel="stylesheet" href="./style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="container-fluid justify-content-center text-center board">
-        <div class="display-1">Word by Word</div>
-        <div class="status">
-          <div class="learned fs-4" id="learned"></div>
-        </div>
-        <div class="word fs-1" id="current-word"></div>
-        <div>
-            <a href="#" class="option fs-5" onclick="assert('option-0')" id="option-0"></a>
-            <a href="#" class="option fs-5" onclick="assert('option-1')" id="option-1"></a>
-            <a href="#" class="option fs-5" onclick="assert('option-2')" id="option-2"></a>
-            <a href="#" class="option fs-5" onclick="assert('option-3')" id="option-3"></a>
-        </div>
-        <div class="mt-4 text-center">
-            <p id="feedback">Choose the correct translation!</p>
-            <a href="#" id="next" onclick="loadDash()" hidden="true">next</a>
-            <br>
-            <br>
-            <a href="#" onclick="loadItWords()">It Words</a>
-        </div>
+  <div class="container-fluid vh-100 d-flex flex-column justify-content-center">
+    <h1 class="display-4 text-center">Word by Word</h1>
+    <div class="text-center mt-4">
+      <label id="current-word" class="fw-bold fs-4"></label>
     </div>
-    <script src="./words.js"></script>
-    <script src="./itWords.js"></script>
-    <script src="./app.js"></script>
-    <script>
-    </script>
+    <div class="d-flex flex-column mt-4 justify-content-center align-items-center">
+      <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="assert('option-0')" id="option-0"></a>
+      <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="assert('option-1')" id="option-1"></a>
+      <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="assert('option-2')" id="option-2"></a>
+      <a href="#" class="option btn btn-lg btn-primary" onclick="assert('option-3')" id="option-3"></a>
+    </div>
+    <div class="d-flex flex-column mt-4 justify-content-center align-items-center">
+      <p id="feedback">Escolha a opção correta!</p>
+      <a href="#" id="next" onclick="loadDash()" hidden="true">next</a>
+      <br>
+      <br>
+<a href="#" onclick="loadItWords()">It Words</a>
+    </div>
+  </div>
+  <script src="./words.js"></script>
+  <script src="./itWords.js"></script>
+  <script src="./app.js"></script>
 </body>
 
 </html>

@@ -104,12 +104,12 @@ function loadCurrentWord() {
 }
 
 function clearDash() {
-  const learned = document.getElementById("learned");
-  learned.innerText = `${getLearnedWordCount()} palavras aprendidas`;
+  // const learned = document.getElementById("learned");
+  // learned.innerText = `${getLearnedWordCount()} palavras aprendidas`;
   for (let elem of document.getElementsByClassName("option")) {
     elem.classList.remove("others");
-    elem.classList.remove("wrong");
-    elem.classList.remove("correct");
+    elem.classList.remove("bg-danger");
+    elem.classList.remove("bg-success");
     elem.classList.add("default");
   }
   const next = document.getElementById("next");
@@ -124,10 +124,10 @@ function assert(id) {
   if (wordElement.correct) {
     words[currentWord.index].status = 1;
     words[currentWord.index].practiceDate = new Date();
-    wordElement.classList.add("correct");
+    wordElement.classList.add("bg-success");
   } else {
     words[currentWord.index].status = 0;
-    wordElement.classList.add("wrong");
+    wordElement.classList.add("bg-danger");
     mistakes = true;
   }
   saveData();
