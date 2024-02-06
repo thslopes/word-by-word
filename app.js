@@ -155,6 +155,29 @@ function saveData() {
 let idx = 0;
 loadData();
 loadDash();
+alert("with list");
+function showWords(){
+  let wordList = document.getElementById("words");
+  const wordsTemplate = document.getElementById("wordsTemplate");
+
+  for (let word in words) {
+    if (word.status==-1){
+      continue;
+    }
+    let aWord = wordsTemplate.cloneNode();
+    aWord.hidden = false;
+    aWord.innerText=word.word;
+    aWord.onclick = function () {
+      words[word.index].status = -1;
+      aWord.classList.remove("bg-danger");
+      aWord.classList.remove("bg-success");
+    };
+
+    if (word.status === 0) {
+      aWord.classList.add("bg-danger");
+    }
+  }
+}
 
 document.documentElement.requestFullscreen();
 
