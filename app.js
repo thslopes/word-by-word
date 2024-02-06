@@ -99,8 +99,8 @@ function loadCurrentWord() {
 }
 
 function clearDash() {
-  // const learned = document.getElementById("learned");
-  // learned.innerText = `${getLearnedWordCount()} palavras aprendidas`;
+  const learned = document.getElementById("learned");
+  learned.innerText = `${getLearnedWordCount()} palavras aprendidas`;
   for (let elem of document.getElementsByClassName("option")) {
     elem.classList.remove("others");
     elem.classList.remove("bg-danger");
