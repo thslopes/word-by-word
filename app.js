@@ -11,6 +11,7 @@ let mistakes = false;
 function getNextWord() {
   idx = idx + 1;
   const mistakesCount = words.filter((word) => word.status === 0).length;
+  alert(mistakesCount);
   if(idx < 4 && mistakesCount && idx <= mistakesCount) {
     return getLearnedWordOrRandom();
   }
