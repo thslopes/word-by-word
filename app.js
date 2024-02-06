@@ -11,7 +11,7 @@ let mistakes = false;
 function getNextWord() {
   idx = idx + 1;
   const mistakesCount = words.filter((word) => word.status === 0).length;
-  alert(mistakesCount);
+
   if(idx < 4 && mistakesCount && idx <= mistakesCount) {
     return getLearnedWordOrRandom();
   }
@@ -93,7 +93,6 @@ function setCards(currentWord) {
 }
 
 function loadCurrentWord() {
-  idx++;
   let currentWord = getNextWord();
   setWord(currentWord.word, "current-word", currentWord.index);
   return currentWord;
