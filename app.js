@@ -155,7 +155,7 @@ function saveData() {
 let idx = 0;
 loadData();
 loadDash();
-alert("with list");
+
 function showWords(){
   let wordList = document.getElementById("words");
   const wordsTemplate = document.getElementById("wordsTemplate");
@@ -176,6 +176,11 @@ function showWords(){
     if (word.status === 0) {
       aWord.classList.add("bg-danger");
     }
+    if (word.status === 1) {
+      aWord.classList.add("bg-success");
+    }
+
+    wordList.appendChild(aWord);
   }
 }
 
