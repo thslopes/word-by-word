@@ -69,13 +69,9 @@ function setWord(word, id, currentIdx, correct = false) {
 }
 
 function loadDash() {
-  try {
   clearDash();
   const currentWord = loadCurrentWord();
   setCards(currentWord);
-  } catch (e) {
-    alert(e);
-  }
 }
 
 function setCards(currentWord) {
@@ -161,3 +157,8 @@ loadData();
 loadDash();
 
 document.documentElement.requestFullscreen();
+
+window.onerror = function(message, source, lineno, colno, error) {
+  const formattedStack = error.stack.replace(/\n/g, '<br/>'); // Format stack trace for alert
+  alert(`Error: ${message}\n\nStack trace:\n${formattedStack}`);
+};
