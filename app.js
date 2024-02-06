@@ -117,7 +117,7 @@ function assert(id) {
   const wordElement = document.getElementById(id);
   let currentWord = words[wordElement.currentIdx];
   if (wordElement.correct) {
-    if (words[currentWord.index].status == 0){
+    if (words[currentWord.index].status == -1){
       words[currentWord.index].status = 1;
     }
     words[currentWord.index].practiceDate = new Date();
