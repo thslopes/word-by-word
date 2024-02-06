@@ -69,9 +69,13 @@ function setWord(word, id, currentIdx, correct = false) {
 }
 
 function loadDash() {
+  try {
   clearDash();
   const currentWord = loadCurrentWord();
   setCards(currentWord);
+  } catch (e) {
+    alert(e);
+  }
 }
 
 function setCards(currentWord) {
