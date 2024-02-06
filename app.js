@@ -12,10 +12,15 @@ function getNextWord() {
   idx = idx + 1;
   const mistakesCount = words.filter((word) => word.status === 0).length;
 
-  if(idx == 1 && mistakesCount && idx <= mistakesCount) {
+  if(mistakesCount && 
+    (
+      (idx == 5 && mistakesCount < 5) || 
+      (idx == 2 && mistakesCount>=5)
+    )
+  ) {
     return getLearnedWordOrRandom();
+    idx = 0;
   }
-  idx = 0;
   return getNextNotLearnedWord();
   
 }
