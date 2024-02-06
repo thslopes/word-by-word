@@ -8,34 +8,38 @@ function debugLog(message) {
 
 let mistakes = false;
 
+function getNextWord() {
+  idx = idx + 1;
+  const mistakesCount = words.filter((w) => word.status === 0).length;
+  if(idx < 4 && mistakesCount && idx <= mistakesCount) {
+    idx = 0;
+    return getLearnedWordOrRandom();
+  }
+  return getNextNotLearnedWord();
+  
+}
+
 function getLearnedWordCount() {
   return words.filter((word) => word.status === 1).length;
 }
 
-function getRandomNotLearnedWord() {
-  let availableWords = words.filter((word) => word.status === 0);
-
-  if (!availableWords.length) {
-    availableWords = words.filter((word) => word.status === -1);
+function getNextNotLearnedWord() {
+  
+    let availableWords = words.filter((word) => word.status === -1);
     if (availableWords.length) {
       return availableWords[0];
     }
-  }
-
-  if (!availableWords.length) {
-    availableWords = words.filter((word) => word.status === 1);
-  }
-
-  return getRandomWord(availableWords);
+  
+  return getRandomWord(words);
 }
 
 function getLearnedWordOrRandom() {
   let availableWords = words
-    .filter((word) => word.status === 1)
+    .filter((word) => word.status === 0)
     .sort((a, b) => a.practiceDate - b.practiceDate);
 
   if (!availableWords.length) {
-    return getRandomNotLearnedWord();
+    return getNextNotLearnedWord();
   }
 
   if (availableWords.length < 5) {
@@ -89,16 +93,7 @@ function setCards(currentWord) {
 
 function loadCurrentWord() {
   idx++;
-  let currentWord = {};
-  debugLog(idx, mistakes)
-  if (idx % 3 === 0 || !mistakes) {
-    debugLog("getRandomNotLearnedWord")
-    currentWord = getRandomNotLearnedWord();
-    idx = 0;
-  } else {
-    debugLog("getLearnedWordOrRandom")
-    currentWord = getLearnedWordOrRandom();
-  }
+  let currentWord = getNextWord();
   setWord(currentWord.word, "current-word", currentWord.index);
   return currentWord;
 }
@@ -122,7 +117,9 @@ function assert(id) {
   const wordElement = document.getElementById(id);
   let currentWord = words[wordElement.currentIdx];
   if (wordElement.correct) {
-    words[currentWord.index].status = 1;
+    if (words[currentWord.index].status == 0){
+      words[currentWord.index].status = 1;
+    }
     words[currentWord.index].practiceDate = new Date();
     wordElement.classList.add("bg-success");
   } else {
