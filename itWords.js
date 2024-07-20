@@ -1,7 +1,6 @@
 
 let itWords =
   [
-
     {
       "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0,
     },
