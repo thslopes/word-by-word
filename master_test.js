@@ -1,114 +1,69 @@
 function getMockedMaster() {
-  return new Master(
-    [{
-      "word": "and", "translation": "e", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1,
-    }],
-    [{
-      "word": "a", "translation": "um", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2,
-    }],
-    [
-      {
-        "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0,
-      }]
-  );
+    return new Master(
+        [{
+            "word": "and", "translation": "e", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1,
+        }],
+        [{
+            "word": "a", "translation": "um", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2,
+        }],
+        [
+            {
+                "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0,
+            }]
+    );
 }
 
-function should_return_to_learn() {
-  const master = getMockedMaster();
+tests.set("should return to learn", () => {
+    const master = getMockedMaster();
 
-  const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
-  const got = master.getWord();
-  if (!deepEqual(got, expected)) {
-    testFailed('should_return_to_learn', expected, got);
-    return;
-  }
-  if (master.toLearn !== true) {
-    testFailed('should_return_to_learn', true, master.toLearn);
-    return;
-  }
-  console.log(' \u001b[32mPASSED\u001b[0m should_return_to_learn ');
-}
+    const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
+    const got = master.getWord();
+    assert(expected, got, 'should return to learn');
+    assert(true, master.toLearn, 'should set to learn as true');
+});
 
-tests.push(should_return_to_learn);
+tests.set("should return learned when index equels three", () => {
+    const master = getMockedMaster();
 
-function should_return_learned_when_index_equels_three() {
-  const master = getMockedMaster();
+    master.exerciseIndex = 3;
 
-  master.exerciseIndex = 3;
+    const expected = { "word": "and", "translation": "e", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1 };
+    const got = master.getWord();
+    assert(expected, got, 'should return learned when index equels three');
+    assert(false, master.toLearn, 'should set to learn as false');
+});
 
-  const expected = { "word": "and", "translation": "e", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1 };
-  const got = master.getWord();
-  if (!deepEqual(got, expected)) {
-    testFailed('should_return_learned_when_index_equels_three', expected, got);
-    return;
-  }
-  if (master.toLearn !== false) {
-    testFailed('should_return_learned_when_index_equels_three', false, master.toLearn);
-    return;
-  }
-  console.log(' \u001b[32mPASSED\u001b[0m should_return_learned_when_index_equels_three ');
-}
+tests.set("should return mistaken when index equals four", () => {
+    const master = getMockedMaster();
 
-tests.push(should_return_learned_when_index_equels_three);
+    master.exerciseIndex = 4;
 
-function should_return_mistaken_when_index_equals_four() {
-  const master = getMockedMaster();
+    const expected = { "word": "a", "translation": "um", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2 };
+    const got = master.getWord();
+    assert(expected, got, 'should return mistaken when index equals four');
+    assert(false, master.toLearn, 'should set to learn as false');
+});
 
-  master.exerciseIndex = 4;
+tests.set("should return to learn when index equels three and learned is empty", () => {
+    const master = getMockedMaster();
+    master.learnedWords = [];
 
-  const expected = { "word": "a", "translation": "um", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2 };
-  const got = master.getWord();
-  if (!deepEqual(got, expected)) {
-    testFailed('should_return_mistaken_when_index_equals_four', expected, got);
-    return;
-  }
-  if (master.toLearn !== false) {
-    testFailed('should_return_mistaken_when_index_equals_four', false, master.toLearn);
-    return;
-  }
-  console.log(' \u001b[32mPASSED\u001b[0m should_return_mistaken_when_index_equals_four ');
-}
+    master.exerciseIndex = 3;
 
-tests.push(should_return_mistaken_when_index_equals_four);
+    const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
+    const got = master.getWord();
+    assert(expected, got, 'should return to learn when index equels three and learned is empty');
+    assert(true, master.toLearn, 'should set to learn as true');
+});
 
-function should_return_to_learn_when_index_equels_three_and_learned_is_empty() {
-  const master = getMockedMaster();
-  master.learnedWords = [];
+tests.set("should return to learn when index equels four and mistaken is empty", () => {
+    const master = getMockedMaster();
+    master.mistakenWords = [];
 
-  master.exerciseIndex = 3;
+    master.exerciseIndex = 4;
 
-  const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
-  const got = master.getWord();
-  if (!deepEqual(got, expected)) {
-    testFailed('should_return_to_learn_when_index_equels_three_and_learned_is_empty', expected, got);
-    return;
-  }
-  if (master.toLearn !== true) {
-    testFailed('should_return_to_learn_when_index_equels_three_and_learned_is_empty', true, master.toLearn);
-    return;
-  }
-  console.log(' \u001b[32mPASSED\u001b[0m should_return_to_learn_when_index_equels_three_and_learned_is_empty ');
-}
-
-tests.push(should_return_to_learn_when_index_equels_three_and_learned_is_empty);
-
-function should_return_to_learn_when_index_equels_four_and_mistaken_is_empty() {
-  const master = getMockedMaster();
-  master.mistakenWords = [];
-
-  master.exerciseIndex = 4;
-
-  const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
-  const got = master.getWord();
-  if (!deepEqual(got, expected)) {
-    testFailed('should_return_to_learn_when_index_equels_four_and_mistaken_is_empty', expected, got);
-    return;
-  }
-  if (master.toLearn !== true) {
-    testFailed('should_return_to_learn_when_index_equels_four_and_mistaken_is_empty', true, master.toLearn);
-    return;
-  }
-  console.log(' \u001b[32mPASSED\u001b[0m should_return_to_learn_when_index_equels_four_and_mistaken_is_empty ');
-}
-
-tests.push(should_return_to_learn_when_index_equels_four_and_mistaken_is_empty);
+    const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
+    const got = master.getWord();
+    assert(expected, got, 'should return to learn when index equels four and mistaken is empty');
+    assert(true, master.toLearn, 'should set to learn as true');
+});
