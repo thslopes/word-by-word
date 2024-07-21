@@ -17,5 +17,12 @@ class Deck {
             i++;
         }
     }
+    assert(optionIndex) {
+        if (optionIndex === this.rightAnswerIndex) {
+            this.options[this.rightAnswerIndex].classList.add("bg-success");
+        } else {
+            this.options[optionIndex].classList.add("bg-danger");
+        }
+    }
 }
 
