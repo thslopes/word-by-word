@@ -19,12 +19,12 @@ function should_return_to_learn() {
   const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
   const got = master.getWord();
   if (!deepEqual(got, expected)) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_to_learn');
-    console.log(expected, got);
+    testFailed('should_return_to_learn', expected, got);
+    return;
   }
   if (master.toLearn !== true) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_to_learn');
-    console.log(`toLeanr is ${master.toLearn}`);
+    testFailed('should_return_to_learn', true, master.toLearn);
+    return;
   }
   console.log(' \u001b[32mPASSED\u001b[0m should_return_to_learn ');
 }
@@ -39,12 +39,12 @@ function should_return_learned_when_index_equels_three() {
   const expected = { "word": "and", "translation": "e", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1 };
   const got = master.getWord();
   if (!deepEqual(got, expected)) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_learned_when_index_equels_three');
-    console.log(expected, got);
+    testFailed('should_return_learned_when_index_equels_three', expected, got);
+    return;
   }
   if (master.toLearn !== false) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_learned_when_index_equels_three');
-    console.log(`toLeanr is ${master.toLearn}`);
+    testFailed('should_return_learned_when_index_equels_three', false, master.toLearn);
+    return;
   }
   console.log(' \u001b[32mPASSED\u001b[0m should_return_learned_when_index_equels_three ');
 }
@@ -59,12 +59,12 @@ function should_return_mistaken_when_index_equals_four() {
   const expected = { "word": "a", "translation": "um", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2 };
   const got = master.getWord();
   if (!deepEqual(got, expected)) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_mistaken_when_index_equals_four');
-    console.log(expected, got);
+    testFailed('should_return_mistaken_when_index_equals_four', expected, got);
+    return;
   }
   if (master.toLearn !== false) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_mistaken_when_index_equals_four');
-    console.log(`toLeanr is ${master.toLearn}`);
+    testFailed('should_return_mistaken_when_index_equals_four', false, master.toLearn);
+    return;
   }
   console.log(' \u001b[32mPASSED\u001b[0m should_return_mistaken_when_index_equals_four ');
 }
@@ -80,12 +80,12 @@ function should_return_to_learn_when_index_equels_three_and_learned_is_empty() {
   const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
   const got = master.getWord();
   if (!deepEqual(got, expected)) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_to_learn_when_index_equels_three_and_learned_is_empty');
-    console.log(expected, got);
+    testFailed('should_return_to_learn_when_index_equels_three_and_learned_is_empty', expected, got);
+    return;
   }
   if (master.toLearn !== true) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_to_learn_when_index_equels_three_and_learned_is_empty');
-    console.log(`toLeanr is ${master.toLearn}`);
+    testFailed('should_return_to_learn_when_index_equels_three_and_learned_is_empty', true, master.toLearn);
+    return;
   }
   console.log(' \u001b[32mPASSED\u001b[0m should_return_to_learn_when_index_equels_three_and_learned_is_empty ');
 }
@@ -101,12 +101,12 @@ function should_return_to_learn_when_index_equels_four_and_mistaken_is_empty() {
   const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
   const got = master.getWord();
   if (!deepEqual(got, expected)) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_to_learn_when_index_equels_four_and_mistaken_is_empty');
-    console.log(expected, got);
+    testFailed('should_return_to_learn_when_index_equels_four_and_mistaken_is_empty', expected, got);
+    return;
   }
   if (master.toLearn !== true) {
-    console.log(' \u001b[31mFAILED\u001b[0m should_return_to_learn_when_index_equels_four_and_mistaken_is_empty');
-    console.log(`toLeanr is ${master.toLearn}`);
+    testFailed('should_return_to_learn_when_index_equels_four_and_mistaken_is_empty', true, master.toLearn);
+    return;
   }
   console.log(' \u001b[32mPASSED\u001b[0m should_return_to_learn_when_index_equels_four_and_mistaken_is_empty ');
 }
