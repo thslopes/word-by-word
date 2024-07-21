@@ -2,12 +2,14 @@ class Deck {
     constructor() {
         this.currentWord = document.getElementById("current-word");
         this.options = document.getElementsByClassName("option");
+        this.nextButton = document.getElementById("next-button");
         this.rightAnswerIndex = -1;
     }
     setCards(word, otherOptions) {
         this.resetOptionsBackground();
         this.setCurrentWord(word);
         this.setOtherWords(otherOptions);
+        this.nextButton.hidden = true;
     }
     setOtherWords(otherOptions) {
         let i = 0;
@@ -39,6 +41,7 @@ class Deck {
         } else {
             this.options[optionIndex].classList.add("bg-danger");
         }
+        this.nextButton.hidden = false;
     }
 }
 
