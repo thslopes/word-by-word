@@ -5,11 +5,13 @@ class Deck {
         this.rightAnswerIndex = -1;
     }
     setCards(word, otherOptions) {
-        this.currentWord.textContent = word.word;
-        this.rightAnswerIndex = Math.floor(Math.random() * this.options.length);
-        this.options[this.rightAnswerIndex].textContent = word.translation;
+        this.resetOptionsBackground();
+        this.setCurrentWord(word);
+        this.setOtherWords(otherOptions);
+    }
+    setOtherWords(otherOptions) {
         let i = 0;
-        for(let otherWord of otherOptions) {
+        for (let otherWord of otherOptions) {
             if (i === this.rightAnswerIndex) {
                 i++;
             }
@@ -17,6 +19,20 @@ class Deck {
             i++;
         }
     }
+
+    setCurrentWord(word) {
+        this.currentWord.textContent = word.word;
+        this.rightAnswerIndex = Math.floor(Math.random() * this.options.length);
+        this.options[this.rightAnswerIndex].textContent = word.translation;
+    }
+
+    resetOptionsBackground() {
+        for (let option of this.options) {
+            option.classList.remove("bg-success");
+            option.classList.remove("bg-danger");
+        }
+    }
+
     assert(optionIndex) {
         if (optionIndex === this.rightAnswerIndex) {
             this.options[this.rightAnswerIndex].classList.add("bg-success");
@@ -26,3 +42,4 @@ class Deck {
     }
 }
 
+let deck = new Deck();
