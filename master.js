@@ -1,3 +1,13 @@
+//  for each 5
+// 1 of each status
+
+// status
+// -1 not learned
+// 1 mistaken
+// 2 learning
+// 3 learned
+// 4 expert
+
 class Master {
   constructor(learnedWords, mistakenWords, wordsToLearn) {
     this.learnedWords = learnedWords;
