@@ -1,5 +1,9 @@
 //  for each 5
-// 1 of each status
+// 5 mistaken
+// 4 mistaken 1 learning
+// 3 mistaken 1 learning 1 learned
+// 2 mistaken 1 learning 1 learned 1 expert
+// 1 mistaken 1 learning 1 learned 1 expert 1 not learned
 
 // status
 // -1 not learned
