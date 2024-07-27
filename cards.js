@@ -10,19 +10,18 @@ class Cards {
     }
 
     getOneWordByStatus(status, sortBy = SortBy.NEXT) {
-        let wordsToLearn = JSON.parse(localStorage.getItem('wordsToLearn'));
-        if (sortBy === SortBy.LONGEST_STUDIED) {
-            const sorted = wordsToLearn.sort((a, b) => new Date(a.practiceDate).getTime() - new Date(b.practiceDate).getTime());
-            console.log(sorted);
-            return sorted
-                .find(word => word.status === status);
-        }
-        return wordsToLearn
+        return JSON.parse(localStorage.getItem('wordsToLearn'))
+            .sort((a, b) => sortBy === SortBy.LONGEST_STUDIED
+                ? new Date(a.practiceDate).getTime() - new Date(b.practiceDate).getTime()
+                : a.index - b.index)
             .find(word => word.status === status);
     }
 
-    getWordByStatus(status, skip = 0, limit = 1) {
-        let wordsToLearn = JSON.parse(localStorage.getItem('wordsToLearn'));
+    getWordsByStatus(status, skip = 0, limit = 1, sortBy = SortBy.NEXT) {
+        let wordsToLearn = JSON.parse(localStorage.getItem('wordsToLearn'))
+            .sort((a, b) => sortBy === SortBy.LONGEST_STUDIED
+                ? new Date(a.practiceDate).getTime() - new Date(b.practiceDate).getTime()
+                : a.index - b.index)
         let words = wordsToLearn.filter(word => word.status === status);
         return words.slice(skip, skip + limit);
     }

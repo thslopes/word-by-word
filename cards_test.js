@@ -16,7 +16,7 @@ words =
             "word": "of", "translation": "de", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 4,
         },
         {
-            "word": "in", "translation": "em", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 5,
+            "word": "in", "translation": "em", "status": -1, "practiceDate": "2024-01-24T00:00:00.000Z", "index": 5,
         }
     ];
 
@@ -56,7 +56,7 @@ tests.set("should get word by status", () => {
     const got = cards.getOneWordByStatus(-1);
 
     // Assert
-    assert(JSON.stringify(words[2]), JSON.stringify(got), 'word not found');
+    assert(words[2], got, 'word not found');
 });
 
 tests.set("should get word by status and sort", () => {
@@ -68,7 +68,7 @@ tests.set("should get word by status and sort", () => {
     const got = cards.getOneWordByStatus(1, SortBy.LONGEST_STUDIED);
 
     // Assert
-    assert(JSON.stringify(words[3]), JSON.stringify(got), 'word not found');
+    assert(words[3], got, 'word not found');
 });
 
 tests.set("should get word by status, skip and limit", () => {
@@ -77,10 +77,22 @@ tests.set("should get word by status, skip and limit", () => {
     localStorage.setItem('wordsToLearn', JSON.stringify(words));
 
     // Act
-    const got = cards.getWordByStatus(-1, 1, 2);
+    const got = cards.getWordsByStatus(-1, 1, 2);
 
     // Assert
-    assert(JSON.stringify(words.slice(4, 6)), JSON.stringify(got), 'skip and limit');
+    assert(words.slice(4, 6), got, 'skip and limit');
+});
+
+tests.set("should get word by status, skip, limit and sort", () => {
+    // Arrange
+    let cards = new Cards();
+    localStorage.setItem('wordsToLearn', JSON.stringify(words));
+
+    // Act
+    const got = cards.getWordsByStatus(-1, 1, 2, SortBy.LONGEST_STUDIED);
+
+    // Assert
+    assert([words[2], words[4]], got, 'skip, limit and sort');
 });
 
 tests.set("should update word", () => {
