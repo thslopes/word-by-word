@@ -25,7 +25,7 @@ class Master {
     constructor() {
         this.exerciseIndex = 0;
         this.cards = new Cards();
-        this.deck = new Deck();
+        this.deck = deck;
         this.words = [];
     }
 
