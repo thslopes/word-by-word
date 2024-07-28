@@ -1,69 +1,86 @@
-function getMockedMaster() {
-    return new Master(
-        [{
-            "word": "and", "translation": "e", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1,
-        }],
-        [{
-            "word": "a", "translation": "um", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2,
-        }],
-        [
-            {
-                "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0,
-            }]
-    );
+class cardsMock {
+    constructor(mockWords) {
+        this.params = [];
+        this.words = mockWords;
+        this.callIndex = 0;
+    }
+    getWordsByStatus(status, skip = 0, limit = 1, sortBy = SortBy.NEXT) {
+        this.params.push([status, skip, limit, sortBy]);
+        return this.words[this.callIndex++];
+    }
+    getOneWordByStatus(status, sortBy = SortBy.NEXT) {
+        this.params.push([status, sortBy]);
+        return this.words[this.callIndex++];
+    }
 }
 
-tests.set("should return to learn", () => {
-    const master = getMockedMaster();
+class deckMock {
+    constructor() {
+        this.word = '';
+        this.otherOptions = [];
+        this.optionIndex = -1;
+    }
+    setCards(word, otherOptions) {
+        this.word = word;
+        this.otherOptions = otherOptions;
+    }
+    assert(optionIndex) {
+        this.optionIndex = optionIndex;
+    }
+}
 
-    const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
-    const got = master.getWord();
-    assert(expected, got, 'should return to learn');
-    assert(true, master.toLearn, 'should set to learn as true');
+tests.set("should return mistaken for index 0", () => {
+    // Arrange
+    let master = new Master();
+    const deck = new deckMock();
+    const cards = new cardsMock([['mistaken', 'one', 'two', 'three', 'four']]);
+    master.deck = deck;
+    master.cards = cards;
+    master.exerciseIndex = 0;
+
+    // Act
+    master.loadDeck();
+
+    // Assert
+    assert([0, 0, 5, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
+    assert(['mistaken'], [deck.word], 'mistaken');
 });
 
-tests.set("should return learned when index equels three", () => {
-    const master = getMockedMaster();
+tests.set("should add learning words", () => {
+    // Arrange
+    let master = new Master();
+    const deck = new deckMock();
+    const cards = new cardsMock([['mistaken'], ['one'], ['two'], ['three'], ['four']]);
+    master.deck = deck;
+    master.cards = cards;
+    master.exerciseIndex = 0;
 
-    master.exerciseIndex = 3;
+    // Act
+    master.loadDeck(0);
 
-    const expected = { "word": "and", "translation": "e", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 1 };
-    const got = master.getWord();
-    assert(expected, got, 'should return learned when index equels three');
-    assert(false, master.toLearn, 'should set to learn as false');
+    // Assert
+    assert([0, 0, 5, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
+    assert([1, 0, 1, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
+    assert([2, 0, 1, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
+    assert([3, 0, 1, SortBy.LONGEST_STUDIED], cards.params[3], 'expert 1');
+    assert([-1, 0, 1, SortBy.NEXT], cards.params[4], 'not learned 1');
+    assert(['mistaken'], [deck.word], 'mistaken');
 });
 
-tests.set("should return mistaken when index equals four", () => {
-    const master = getMockedMaster();
+tests.set("should not reload words for index > 0", () => {
+    // Arrange
+    let master = new Master();
+    const deck = new deckMock();
+    const cards = new cardsMock([]);
+    master.deck = deck;
+    master.cards = cards;
+    master.exerciseIndex = 1;
+    master.words = ['mistaken', 'one', 'two', 'three', 'four'];
 
-    master.exerciseIndex = 4;
+    // Act
+    master.loadDeck();
 
-    const expected = { "word": "a", "translation": "um", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2 };
-    const got = master.getWord();
-    assert(expected, got, 'should return mistaken when index equals four');
-    assert(false, master.toLearn, 'should set to learn as false');
-});
-
-tests.set("should return to learn when index equels three and learned is empty", () => {
-    const master = getMockedMaster();
-    master.learnedWords = [];
-
-    master.exerciseIndex = 3;
-
-    const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
-    const got = master.getWord();
-    assert(expected, got, 'should return to learn when index equels three and learned is empty');
-    assert(true, master.toLearn, 'should set to learn as true');
-});
-
-tests.set("should return to learn when index equels four and mistaken is empty", () => {
-    const master = getMockedMaster();
-    master.mistakenWords = [];
-
-    master.exerciseIndex = 4;
-
-    const expected = { "word": "the", "translation": "o", "status": -1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 0 };
-    const got = master.getWord();
-    assert(expected, got, 'should return to learn when index equels four and mistaken is empty');
-    assert(true, master.toLearn, 'should set to learn as true');
+    // Assert
+    assert(0, cards.params.length, 'cards called');
+    assert(['one'], [deck.word], 'one');
 });
