@@ -6,6 +6,7 @@ class Cards {
     init() {
         if (localStorage.getItem('wordsToLearn') === null) {
             localStorage.setItem('wordsToLearn', JSON.stringify(words));
+            localStorage.setItem('book', 'default');
         }
     }
 
@@ -31,5 +32,15 @@ class Cards {
         let index = wordsToLearn.findIndex(w => w.index === word.index);
         wordsToLearn[index] = word;
         localStorage.setItem('wordsToLearn', JSON.stringify(wordsToLearn));
+        document.getElementById('learnedWords').innerText = `Learned words: ${wordsToLearn.filter(w => w.status === 3).length}`
+        + ` / ${wordsToLearn.length} (${Math.round(wordsToLearn.filter(w => w.status === 3).length / wordsToLearn.length * 100)}%)`;
+    }
+
+    loadItWords() {
+        if (localStorage.getItem('book') === 'it') {
+            return;
+        }
+        localStorage.setItem('wordsToLearn', JSON.stringify(itWords));
+        localStorage.setItem('book', 'it');
     }
 }

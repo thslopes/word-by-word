@@ -91,6 +91,12 @@ class Master {
         }
     }
 
+    loadItWords() {
+        this.cards.loadItWords();
+        this.exerciseIndex = 0;
+        this.loadDeck();
+    }
+
     // just for tests
     getNow() {
         return new Date().toISOString();

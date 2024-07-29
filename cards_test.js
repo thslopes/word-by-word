@@ -29,8 +29,24 @@ tests.set("should create local storage database test", () => {
     cards.init();
 
     // Assert
-    const got = localStorage.getItem('wordsToLearn')
+    const got = localStorage.getItem('wordsToLearn');
     assert(JSON.stringify(words), got, 'database not created');
+    assert("default", localStorage.getItem('book'), 'database not created');
+});
+
+tests.set("should create local storage database test", () => {
+    // Arrange
+    itWords = testWords.slice(0, 2);
+    localStorage.clear();
+    let cards = new Cards();
+
+    // Act
+    cards.loadItWords();
+
+    // Assert
+    const got = localStorage.getItem('wordsToLearn');
+    assert(JSON.stringify(itWords), got, 'database not created');
+    assert("it", localStorage.getItem('book'), 'database not created');
 });
 
 tests.set("should not create local storage database when it already exists test", () => {

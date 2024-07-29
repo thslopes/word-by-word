@@ -16,6 +16,9 @@ class cardsMock {
     updateWord(word) {
         this.updatedWord = word;
     }
+    loadItWords() {
+        this.loadItWordsCalled = true;
+    }
 }
 
 class deckMock {
@@ -130,3 +133,21 @@ for (const test of [
 
     });
 }
+
+tests.set("should load it words", () => {
+    // Arrange
+    let master = new Master();
+    master.exerciseIndex = 2;
+    let loadDeckCalled = false;
+    master.loadDeck = () => loadDeckCalled = true;
+    const cards = new cardsMock([]);
+    master.cards = cards;
+
+    // Act
+    master.loadItWords();
+
+    // Assert
+    assert(true, cards.loadItWordsCalled, 'it words');
+    assert(0, master.exerciseIndex, 'index');
+    assert(true, loadDeckCalled, 'load deck');
+});

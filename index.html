@@ -28,13 +28,14 @@
             <a href="#" id="next-button" onclick="master.loadDeck()" hidden="true">next</a>
             <br>
             <br>
-            <a href="#" onclick="loadItWords()">It Words</a>
+            <a href="#" onclick="master.loadItWords()">It Words</a>
         </div>
         <div id="words" class="d-flex flex-column mt-4 justify-content-center align-items-left">
             <a id="wordsTemplate" class="btn btn-lg btn-primary mb-2" hidden></a>
         </div>
         <p id="learned"></p>
     </div>
+    <span id="learnedWords"></span><br />
     <span id="version"></span>
     <script>
         let tests = new Map();
