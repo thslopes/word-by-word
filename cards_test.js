@@ -1,4 +1,4 @@
-words =
+let testWords =
     [
         {
             "word": "the", "translation": "o", "status": 1, "practiceDate": "2024-01-26T00:00:00.000Z", "index": 0,
@@ -49,6 +49,7 @@ tests.set("should not create local storage database when it already exists test"
 
 tests.set("should get word by status", () => {
     // Arrange
+    words = testWords;
     let cards = new Cards();
     localStorage.setItem('wordsToLearn', JSON.stringify(words));
 
@@ -61,6 +62,7 @@ tests.set("should get word by status", () => {
 
 tests.set("should get word by status and sort", () => {
     // Arrange
+    words = testWords;
     let cards = new Cards();
     localStorage.setItem('wordsToLearn', JSON.stringify(words));
 
@@ -73,6 +75,7 @@ tests.set("should get word by status and sort", () => {
 
 tests.set("should get word by status, skip and limit", () => {
     // Arrange
+    words = testWords;
     let cards = new Cards();
     localStorage.setItem('wordsToLearn', JSON.stringify(words));
 
@@ -85,6 +88,7 @@ tests.set("should get word by status, skip and limit", () => {
 
 tests.set("should get word by status, skip, limit and sort", () => {
     // Arrange
+    words = testWords;
     let cards = new Cards();
     localStorage.setItem('wordsToLearn', JSON.stringify(words));
 

@@ -22,6 +22,7 @@ class Master {
             status: status,
             practiceDate: this.getNow(),
         });
+        this.exerciseIndex++;
     }
 
     getNextStatus(word, isRight) {
@@ -59,6 +60,7 @@ class Master {
 
     loadWords() {
         // only reload words if exerciseIndex is 0
+        this.exerciseIndex = this.exerciseIndex % 5;
         if (this.exerciseIndex > 0) {
             return;
         }

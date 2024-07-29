@@ -40,7 +40,7 @@ tests.set("should return mistaken for index 0", () => {
     const cards = new cardsMock([['mistaken', 'one', 'two', 'three', 'four']]);
     master.deck = deck;
     master.cards = cards;
-    master.exerciseIndex = 0;
+    master.exerciseIndex = 5;
 
     // Act
     master.loadDeck();
@@ -48,6 +48,7 @@ tests.set("should return mistaken for index 0", () => {
     // Assert
     assert([0, 0, 5, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
     assert(['mistaken'], [deck.word], 'mistaken');
+    assert(0, master.exerciseIndex, 'reset index');
 });
 
 tests.set("should add learning words", () => {
@@ -102,14 +103,14 @@ tests.set("should register for onAssert event", () => {
 });
 
 for (const test of [
-    {currentStatus: -1, isRight: true, expectedStatus: 1},
-    {currentStatus: 1, isRight: true, expectedStatus: 2},
-    {currentStatus: 2, isRight: true, expectedStatus: 3},
-    {currentStatus: 3, isRight: true, expectedStatus: 3},
-    {currentStatus: -1, isRight: false, expectedStatus: 0},
-    {currentStatus: 1, isRight: false, expectedStatus: 0},
-    {currentStatus: 2, isRight: false, expectedStatus: 0},
-    {currentStatus: 3, isRight: false, expectedStatus: 0},
+    { currentStatus: -1, isRight: true, expectedStatus: 1 },
+    { currentStatus: 1, isRight: true, expectedStatus: 2 },
+    { currentStatus: 2, isRight: true, expectedStatus: 3 },
+    { currentStatus: 3, isRight: true, expectedStatus: 3 },
+    { currentStatus: -1, isRight: false, expectedStatus: 0 },
+    { currentStatus: 1, isRight: false, expectedStatus: 0 },
+    { currentStatus: 2, isRight: false, expectedStatus: 0 },
+    { currentStatus: 3, isRight: false, expectedStatus: 0 },
 ]) {
     tests.set(`should save ${test.expectedStatus} on onAssert ${test.isRight} for ${test.currentStatus}`, () => {
         // Arrange
@@ -117,13 +118,15 @@ for (const test of [
         const cards = new cardsMock([]);
         master.cards = cards;
         master.exerciseIndex = 0;
-        master.words = [{word: 'mistaken', status: test.currentStatus}];
+        master.words = [{ word: 'mistaken', status: test.currentStatus }];
         master.getNow = () => new Date('2020-01-01');
 
         // Act
         master.onAssert(test.isRight);
 
         // Assert
-        assert({word: 'mistaken', status: test.expectedStatus, practiceDate: new Date('2020-01-01')}, cards.updatedWord, 'status');
+        assert({ word: 'mistaken', status: test.expectedStatus, practiceDate: new Date('2020-01-01') }, cards.updatedWord, 'status');
+        assert(1, master.exerciseIndex, 'index');
+
     });
 }
