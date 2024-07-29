@@ -25,6 +25,12 @@ function runTests() {
         failedAsserts = [];
     }
     console.log(`\n\n${tests.size - failed}/${tests.size} tests passed`);
+    if (failed > 0) {
+        printFailedTests();
+    }
+}
+
+function printFailedTests() {
     console.log(`\nFailed tests:`);
     for (const test of failedTests) {
         console.log(`- ${test}`);

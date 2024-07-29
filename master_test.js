@@ -3,6 +3,7 @@ class cardsMock {
         this.params = [];
         this.words = mockWords;
         this.callIndex = 0;
+        this.updatedWord = {};
     }
     getWordsByStatus(status, skip = 0, limit = 1, sortBy = SortBy.NEXT) {
         this.params.push([status, skip, limit, sortBy]);
@@ -11,6 +12,9 @@ class cardsMock {
     getOneWordByStatus(status, sortBy = SortBy.NEXT) {
         this.params.push([status, sortBy]);
         return this.words[this.callIndex++];
+    }
+    updateWord(word) {
+        this.updatedWord = word;
     }
 }
 
@@ -84,3 +88,42 @@ tests.set("should not reload words for index > 0", () => {
     assert(0, cards.params.length, 'cards called');
     assert(['one'], [deck.word], 'one');
 });
+
+tests.set("should register for onAssert event", () => {
+    // Arrange
+    let master = new Master();
+    master.cards = new cardsMock([]);
+    master.deck = new deckMock();
+
+    // Act
+
+    // Assert
+    assert(master, deck.onAssertListener, 'option index');
+});
+
+for (const test of [
+    {currentStatus: -1, isRight: true, expectedStatus: 1},
+    {currentStatus: 1, isRight: true, expectedStatus: 2},
+    {currentStatus: 2, isRight: true, expectedStatus: 3},
+    {currentStatus: 3, isRight: true, expectedStatus: 3},
+    {currentStatus: -1, isRight: false, expectedStatus: 0},
+    {currentStatus: 1, isRight: false, expectedStatus: 0},
+    {currentStatus: 2, isRight: false, expectedStatus: 0},
+    {currentStatus: 3, isRight: false, expectedStatus: 0},
+]) {
+    tests.set(`should save ${test.expectedStatus} on onAssert ${test.isRight} for ${test.currentStatus}`, () => {
+        // Arrange
+        let master = new Master();
+        const cards = new cardsMock([]);
+        master.cards = cards;
+        master.exerciseIndex = 0;
+        master.words = [{word: 'mistaken', status: test.currentStatus}];
+        master.getNow = () => new Date('2020-01-01');
+
+        // Act
+        master.onAssert(test.isRight);
+
+        // Assert
+        assert({word: 'mistaken', status: test.expectedStatus, practiceDate: new Date('2020-01-01')}, cards.updatedWord, 'status');
+    });
+}

@@ -5,6 +5,15 @@ const otherWords = [
     { "word": "apple", "translation": "maçã" }
 ]
 
+class fakeListener {
+    constructor(isCorrect) {
+        this.isCorrect = isCorrect;
+    }
+    onAssert(isCorrect) {
+        this.isCorrect = isCorrect;
+    }
+}
+
 tests.set("should set current word", () => {
     deck = new Deck();
     deck.setCards(currentWord, [{}, {}, {}]);
@@ -30,21 +39,29 @@ tests.set("should set other options", () => {
 
 tests.set("should assert right answer", () => {
     deck = new Deck();
+    const listener = new fakeListener(false);
+    deck.onAssertListener = listener;
     deck.setCards(currentWord, otherWords);
     deck.options[deck.rightAnswerIndex].click();
-    assert(true, deck.options[deck.rightAnswerIndex].classList.contains('bg-success'), 'shpuld set right answer background');
+    assert(true, deck.options[deck.rightAnswerIndex].classList.contains('bg-success'), 'should set right answer background');
+    assert(true, listener.isCorrect, 'should call assert callback');
 });
 
 tests.set("should assert wrong answer", () => {
     deck = new Deck();
+    const listener = new fakeListener(true);
+    deck.onAssertListener = listener;
     deck.setCards(currentWord, otherWords);
     const clickIndex = (deck.rightAnswerIndex + 1) % 3;
     deck.options[clickIndex].click();
     assert(true, deck.options[clickIndex].classList.contains('bg-danger'), 'should set wrong answer background');
+    assert(false, listener.isCorrect, 'should call assert callback');
 });
 
 tests.set("should clear reset deck classes on set cards", () => {
     deck = new Deck();
+    const listener = new fakeListener(false);
+    deck.onAssertListener = listener;
     deck.setCards(currentWord, otherWords);
     deck.options[deck.rightAnswerIndex].click();
     deck.setCards(currentWord, otherWords);
@@ -59,6 +76,8 @@ tests.set("should clear reset deck classes on set cards", () => {
 
 tests.set("should remove hidden class from element next", () => {
     deck = new Deck();
+    const listener = new fakeListener(false);
+    deck.onAssertListener = listener;
     deck.setCards(currentWord, otherWords);
     deck.options[deck.rightAnswerIndex].click();
     assert(false, deck.nextButton.hasAttribute('hidden'), 'should remove hidden class from element next');

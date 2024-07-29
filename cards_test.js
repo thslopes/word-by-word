@@ -107,3 +107,7 @@ tests.set("should update word", () => {
     const got = JSON.parse(localStorage.getItem('wordsToLearn')).find(word => word.word === 'a');
     assert(1, got.status, 'word not updated');
 });
+
+tests.set("clear localStorage", () => {
+    localStorage.clear();
+});
