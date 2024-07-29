@@ -37,8 +37,8 @@ class Deck {
     }
 
     assert(optionIndex) {
+        this.options[this.rightAnswerIndex].classList.add("bg-success");
         if (optionIndex === this.rightAnswerIndex) {
-            this.options[this.rightAnswerIndex].classList.add("bg-success");
             this.onAssertListener.onAssert(true);
         } else {
             this.options[optionIndex].classList.add("bg-danger");

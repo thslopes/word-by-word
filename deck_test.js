@@ -55,6 +55,7 @@ tests.set("should assert wrong answer", () => {
     const clickIndex = (deck.rightAnswerIndex + 1) % 3;
     deck.options[clickIndex].click();
     assert(true, deck.options[clickIndex].classList.contains('bg-danger'), 'should set wrong answer background');
+    assert(true, deck.options[deck.rightAnswerIndex].classList.contains('bg-success'), 'should set right answer background');
     assert(false, listener.isCorrect, 'should call assert callback');
 });
 

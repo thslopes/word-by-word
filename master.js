@@ -23,6 +23,9 @@ class Master {
             practiceDate: this.getNow(),
         });
         this.exerciseIndex++;
+        setTimeout(() => {
+            this.loadDeck();
+        }, 500);
     }
 
     getNextStatus(word, isRight) {
