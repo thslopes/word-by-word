@@ -2,43 +2,56 @@
 <html lang="pt">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Expires" content="0">
-  <title>Word by Word</title>
-  <link type="text/css" rel="stylesheet" href="./style.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Expires" content="0">
+    <title>Word by Word</title>
+    <link type="text/css" rel="stylesheet" href="./style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-  <div class="container-fluid vh-100 d-flex flex-column justify-content-center">
-    <h1 class="display-4 text-center">Word by Word</h1>
-    <div class="text-center mt-4">
-      <label id="current-word" class="fw-bold fs-4"></label>
+    <div class="container-fluid vh-100 d-flex flex-column justify-content-center">
+        <h1 class="display-4 text-center">Word by Word</h1>
+        <div class="text-center mt-4">
+            <label id="current-word" class="fw-bold fs-4"></label>
+        </div>
+        <div class="d-flex flex-column mt-4 justify-content-center align-items-center">
+            <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="deck.assert(0)" id="option-0"></a>
+            <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="deck.assert(1)" id="option-1"></a>
+            <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="deck.assert(2)" id="option-2"></a>
+            <a href="#" class="option btn btn-lg btn-primary" onclick="deck.assert(3)" id="option-3"></a>
+        </div>
+        <div class="d-flex flex-column mt-4 justify-content-center align-items-center">
+            <p id="feedback">Escolha a opção correta!</p>
+            <a href="#" id="next-button" onclick="master.loadDeck()" hidden="true">next</a>
+            <br>
+            <br>
+            <a href="#" onclick="master.loadItWords()">It Words</a>
+        </div>
+        <div id="words" class="d-flex flex-column mt-4 justify-content-center align-items-left">
+            <a id="wordsTemplate" class="btn btn-lg btn-primary mb-2" hidden></a>
+        </div>
+        <p id="learned"></p>
     </div>
-    <div class="d-flex flex-column mt-4 justify-content-center align-items-center">
-      <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="assert('option-0')" id="option-0"></a>
-      <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="assert('option-1')" id="option-1"></a>
-      <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="assert('option-2')" id="option-2"></a>
-      <a href="#" class="option btn btn-lg btn-primary" onclick="assert('option-3')" id="option-3"></a>
-    </div>
-    <div class="d-flex flex-column mt-4 justify-content-center align-items-center">
-      <p id="feedback">Escolha a opção correta!</p>
-      <a href="#" id="next" onclick="loadDash()" hidden="true">next</a>
-      <br>
-      <br>
-      <a href="#" onclick="loadItWords()">It Words</a>
-    </div>
-    <div id="words" class="d-flex flex-column mt-4 justify-content-center align-items-left">
-      <a id="wordsTemplate" class="btn btn-lg btn-primary mb-2" hidden></a>
-    </div>
-    <p id="learned"></p>
-  </div>
-  <script src="./words.js"></script>
-  <script src="./itWords.js"></script>
-  <script src="./app.js"></script>
-  v0.1.2
+    <span id="learnedWords"></span><br />
+    <span id="version"></span>
+    <script>
+        let tests = new Map();
+        const version = 'v0.2.0';
+        document.getElementById('version').innerText = version;
+    </script>
+    <script src="./words.js"></script>
+    <script src="./itWords.js"></script>
+    <script src="./deck.js"></script>
+    <script src="./deck_test.js"></script>
+    <script src="./cards.js"></script>
+    <script src="./cards_test.js"></script>
+    <script src="./master.js"></script>
+    <script src="./master_test.js"></script>
+    <script src="./app.js"></script>
+    <script src="./tests.js"></script>
 </body>
 
 </html>
