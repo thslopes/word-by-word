@@ -43,13 +43,13 @@ tests.set("should return mistaken for index 0", () => {
     const cards = new cardsMock([['mistaken', 'one', 'two', 'three', 'four']]);
     master.deck = deck;
     master.cards = cards;
-    master.exerciseIndex = 5;
+    master.exerciseIndex = 10;
 
     // Act
     master.loadDeck();
 
     // Assert
-    assert([0, 0, 5, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
+    assert([0, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
     assert(['mistaken'], [deck.word], 'mistaken');
     assert(0, master.exerciseIndex, 'reset index');
 });
@@ -67,11 +67,11 @@ tests.set("should add learning words", () => {
     master.loadDeck(0);
 
     // Assert
-    assert([0, 0, 5, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
+    assert([0, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
     assert([1, 0, 1, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
     assert([2, 0, 1, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
     assert([3, 0, 1, SortBy.LONGEST_STUDIED], cards.params[3], 'expert 1');
-    assert([-1, 0, 1, SortBy.NEXT], cards.params[4], 'not learned 1');
+    assert([-1, 0, 6, SortBy.NEXT], cards.params[4], 'not learned 1');
     assert(['mistaken'], [deck.word], 'mistaken');
 });
 

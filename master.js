@@ -63,12 +63,12 @@ class Master {
 
     loadWords() {
         // only reload words if exerciseIndex is 0
-        this.exerciseIndex = this.exerciseIndex % 5;
+        this.exerciseIndex = this.exerciseIndex % 10;
         if (this.exerciseIndex > 0) {
             return;
         }
         // try to get only mistaken words
-        this.words = this.cards.getWordsByStatus(WordStatus.MISTAKEN, 0, 5, SortBy.LONGEST_STUDIED);
+        this.words = this.cards.getWordsByStatus(WordStatus.MISTAKEN, 0, 10, SortBy.LONGEST_STUDIED);
 
         //  for each 5
         // 5 mistaken
@@ -76,18 +76,18 @@ class Master {
         // 3 mistaken 1 learning 1 learned
         // 2 mistaken 1 learning 1 learned 1 expert
         // 1 mistaken 1 learning 1 learned 1 expert 1 not learned
-        if (this.words.length < 5) {
+        if (this.words.length < 10) {
             for (let status of [WordStatus.LEARNING, WordStatus.LEARNED, WordStatus.EXPERT]) {
                 this.words = this.words.concat(this.cards.getWordsByStatus(status, 0, 1, SortBy.LONGEST_STUDIED));
-                if (this.words.length === 5) {
+                if (this.words.length === 10) {
                     break;
                 }
             }
         }
 
         // if still less than 5, get not learned words
-        if (this.words.length < 5) {
-            this.words = this.words.concat(this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, 0, 5 - this.words.length, SortBy.NEXT));
+        if (this.words.length < 10) {
+            this.words = this.words.concat(this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, 0, 10 - this.words.length, SortBy.NEXT));
         }
     }
 
