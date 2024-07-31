@@ -17,6 +17,15 @@ let testWords =
         },
         {
             "word": "in", "translation": "em", "status": -1, "practiceDate": "2024-01-24T00:00:00.000Z", "index": 5,
+        },
+        {
+            "word": "is", "translation": "é", "status": 3, "practiceDate": "2024-01-23T00:00:00.000Z", "index": 6, "practiceCount": 4,
+        },
+        {
+            "word": "it", "translation": "isso", "status": 3, "practiceDate": "2024-01-22T00:00:00.000Z", "index": 7, "practiceCount": 3,
+        },
+        {
+            "word": "you", "translation": "você", "status": 3, "practiceDate": "2024-01-21T00:00:00.000Z", "index": 8, "practiceCount": 3,
         }
     ];
 
@@ -113,6 +122,19 @@ tests.set("should get word by status, skip, limit and sort", () => {
 
     // Assert
     assert([words[2], words[4]], got, 'skip, limit and sort');
+});
+
+tests.set("should sort by practiceCount desc", () => {
+    // Arrange
+    words = testWords;
+    let cards = new Cards();
+    localStorage.setItem('wordsToLearn', JSON.stringify(words));
+
+    // Act
+    const got = cards.getWordsByStatus(3, 0, 2, SortBy.PRACTICE_COUNT);
+
+    // Assert
+    assert([words[8], words[7]], got, 'practice count desc');
 });
 
 tests.set("should update word", () => {

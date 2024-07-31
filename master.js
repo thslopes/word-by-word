@@ -6,6 +6,15 @@ const WordStatus = {
     EXPERT: 3,
 };
 
+const exerciseConfig = [
+    { status: WordStatus.MISTAKEN, count: 10, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.LEARNING, count: 3, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.LEARNED, count: 2, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.EXPERT, count: 1, sortBy: SortBy.PRACTICE_COUNT },
+    { status: WordStatus.NOT_LEARNED, count: 10, sortBy: SortBy.NEXT },
+    { status: WordStatus.EXPERT, count: 10, sortBy: SortBy.PRACTICE_COUNT },
+];
+
 class Master {
     constructor() {
         this.exerciseIndex = 0;
@@ -16,11 +25,17 @@ class Master {
     }
 
     onAssert(isRight) {
-        let status = this.getNextStatus(this.words[this.exerciseIndex], isRight);
+        const currentWord = this.words[this.exerciseIndex];
+        let status = this.getNextStatus(currentWord, isRight);
+        let practiceCount = 0;
+        if (status === WordStatus.EXPERT) {
+            practiceCount = currentWord.practiceCount ? currentWord.practiceCount + 1 : 1;
+        }
         this.cards.updateWord({
-            ...this.words[this.exerciseIndex],
+            ...currentWord,
             status: status,
             practiceDate: this.getNow(),
+            practiceCount: practiceCount,
         });
         this.exerciseIndex++;
         setTimeout(() => {
@@ -67,21 +82,15 @@ class Master {
         if (this.exerciseIndex > 0) {
             return;
         }
-        // try to get only mistaken words
-        this.words = this.cards.getWordsByStatus(WordStatus.MISTAKEN, 0, 10, SortBy.LONGEST_STUDIED);
+        this.words = [];
 
-        //  for each 5
-        // 5 mistaken
-        // 4 mistaken 1 learning
-        // 3 mistaken 1 learning 1 learned
-        // 2 mistaken 1 learning 1 learned 1 expert
-        // 1 mistaken 1 learning 1 learned 1 expert 1 not learned
-        if (this.words.length < 10) {
-            for (let status of [WordStatus.LEARNING, WordStatus.LEARNED, WordStatus.EXPERT]) {
-                this.words = this.words.concat(this.cards.getWordsByStatus(status, 0, 1, SortBy.LONGEST_STUDIED));
-                if (this.words.length === 10) {
-                    break;
-                }
+        for (let config of exerciseConfig) {
+            this.words = this.words.concat(this.cards.getWordsByStatus(
+                config.status, 0,
+                config.count + this.words.length > 10 ? 10 - this.words.length : config.count,
+                config.sortBy));
+            if (this.words.length >= 10) {
+                break;
             }
         }
 
