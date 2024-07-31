@@ -44,8 +44,15 @@ class Cards {
         let index = wordsToLearn.findIndex(w => w.index === word.index);
         wordsToLearn[index] = word;
         localStorage.setItem('wordsToLearn', JSON.stringify(wordsToLearn));
-        document.getElementById('learnedWords').innerText = `Learned words: ${wordsToLearn.filter(w => w.status === 3).length}`
-            + ` / ${wordsToLearn.length} (${Math.round(wordsToLearn.filter(w => w.status === 3).length / wordsToLearn.length * 100)}%)`;
+        const expertWords = wordsToLearn.filter(w => w.status === 3).length;
+        const learnedWordsCount = wordsToLearn.filter(w => w.status === 2).length;
+        const learningWordsCount = wordsToLearn.filter(w => w.status === 1).length;
+        const mistakenWordsCount = wordsToLearn.filter(w => w.status === 0).length;
+        document.getElementById('learnedWords').innerText =
+            `Expert words: ${expertWords}` + ` / ${wordsToLearn.length} (${Math.round(expertWords / wordsToLearn.length * 100)}%)\n` +
+            'Learned words: ' + `${learnedWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(learnedWordsCount / wordsToLearn.length * 100)}%)\n` +
+            'Learning words: ' + `${learningWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(learningWordsCount / wordsToLearn.length * 100)}%)\n` +
+            'Mistaken words: ' + `${mistakenWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(mistakenWordsCount / wordsToLearn.length * 100)}%)\n`;
     }
 
     loadItWords() {
