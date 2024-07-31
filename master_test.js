@@ -161,3 +161,22 @@ tests.set("should load it words", () => {
     assert(0, master.exerciseIndex, 'index');
     assert(true, loadDeckCalled, 'load deck');
 });
+
+tests.set("should update word woth status WordStatus.REMOVED", () => {
+    // Arrange
+    let master = new Master();
+    const cards = new cardsMock([]);
+    master.cards = cards;
+    master.exerciseIndex = 0;
+    master.words = [{ word: 'mistaken', status: WordStatus.NOT_LEARNED }];
+    let called = false;
+    master.loadDeck = () => called = true;
+
+    // Act
+    master.removeWord();
+
+    // Assert
+    assert(1, master.exerciseIndex, 'index');
+    assert(true, called, 'load deck');
+    assert(WordStatus.REMOVED, cards.updatedWord.status, 'status');
+});

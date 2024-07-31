@@ -44,6 +44,6 @@ class Deck {
             this.options[optionIndex].classList.add("bg-danger");
             this.onAssertListener.onAssert(false);
         }
-        this.nextButton.hidden = false;
+        // this.nextButton.hidden = false;
     }
 }

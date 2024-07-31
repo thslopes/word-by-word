@@ -1,4 +1,5 @@
 const WordStatus = {
+    REMOVED: -2,
     NOT_LEARNED: -1,
     MISTAKEN: 0,
     LEARNING: 1,
@@ -109,5 +110,16 @@ class Master {
     // just for tests
     getNow() {
         return new Date().toISOString();
+    }
+
+    removeWord() {
+        this.cards.updateWord({
+            ...this.words[this.exerciseIndex],
+            status: WordStatus.REMOVED,
+            practiceDate: null,
+            practiceCount: 0,
+        });
+        this.exerciseIndex++;
+        this.loadDeck();
     }
 }
