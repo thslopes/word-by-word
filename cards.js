@@ -35,7 +35,7 @@ class Cards {
             case SortBy.PRACTICE_COUNT:
                 return (a, b) => b.practiceCount == a.practiceCount
                     ? new Date(a.practiceDate).getTime() - new Date(b.practiceDate).getTime()
-                    : a.practiceCount - b.practiceCount;
+                    : (a.practiceCount ?? 0) - (b.practiceCount ?? 0);
         }
     }
 

@@ -26,6 +26,9 @@ let testWords =
         },
         {
             "word": "you", "translation": "você", "status": 3, "practiceDate": "2024-01-21T00:00:00.000Z", "index": 8, "practiceCount": 3,
+        },
+        {
+            "word": "that", "translation": "aquele", "status": 3, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 9,
         }
     ];
 
@@ -134,7 +137,7 @@ tests.set("should sort by practiceCount desc", () => {
     const got = cards.getWordsByStatus(3, 0, 2, SortBy.PRACTICE_COUNT);
 
     // Assert
-    assert([words[8], words[7]], got, 'practice count desc');
+    assert([words[9], words[8]], got, 'practice count desc');
 });
 
 tests.set("should update word", () => {
