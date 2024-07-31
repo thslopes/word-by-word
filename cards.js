@@ -49,11 +49,13 @@ class Cards {
         const learningWordsCount = wordsToLearn.filter(w => w.status === 1).length;
         const mistakenWordsCount = wordsToLearn.filter(w => w.status === 0).length;
         const notLearnedCount = wordsToLearn.filter(w => w.status === -1).length;
+        const removedWordsCount = wordsToLearn.filter(w => w.status === -2).length;
         document.getElementById('learnedWords').innerText =
             `Expert words: ${expertWords}` + ` / ${notLearnedCount} (${Math.round(expertWords / notLearnedCount * 100)}%)\n` +
             'Learned words: ' + `${learnedWordsCount}` + ` / ${notLearnedCount} (${Math.round(learnedWordsCount / notLearnedCount * 100)}%)\n` +
             'Learning words: ' + `${learningWordsCount}` + ` / ${notLearnedCount} (${Math.round(learningWordsCount / notLearnedCount * 100)}%)\n` +
-            'Mistaken words: ' + `${mistakenWordsCount}` + ` / ${notLearnedCount} (${Math.round(mistakenWordsCount / notLearnedCount * 100)}%)\n`;
+            'Mistaken words: ' + `${mistakenWordsCount}` + ` / ${notLearnedCount} (${Math.round(mistakenWordsCount / notLearnedCount * 100)}%)\n` +
+            'Removed words: ' + `${removedWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(removedWordsCount / wordsToLearn.length * 100)}%)\n`;
     }
 
     loadItWords() {
