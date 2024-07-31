@@ -48,11 +48,12 @@ class Cards {
         const learnedWordsCount = wordsToLearn.filter(w => w.status === 2).length;
         const learningWordsCount = wordsToLearn.filter(w => w.status === 1).length;
         const mistakenWordsCount = wordsToLearn.filter(w => w.status === 0).length;
+        const notLearnedCount = wordsToLearn.filter(w => w.status === -1).length;
         document.getElementById('learnedWords').innerText =
-            `Expert words: ${expertWords}` + ` / ${wordsToLearn.length} (${Math.round(expertWords / wordsToLearn.length * 100)}%)\n` +
-            'Learned words: ' + `${learnedWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(learnedWordsCount / wordsToLearn.length * 100)}%)\n` +
-            'Learning words: ' + `${learningWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(learningWordsCount / wordsToLearn.length * 100)}%)\n` +
-            'Mistaken words: ' + `${mistakenWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(mistakenWordsCount / wordsToLearn.length * 100)}%)\n`;
+            `Expert words: ${expertWords}` + ` / ${notLearnedCount} (${Math.round(expertWords / notLearnedCount * 100)}%)\n` +
+            'Learned words: ' + `${learnedWordsCount}` + ` / ${notLearnedCount} (${Math.round(learnedWordsCount / notLearnedCount * 100)}%)\n` +
+            'Learning words: ' + `${learningWordsCount}` + ` / ${notLearnedCount} (${Math.round(learningWordsCount / notLearnedCount * 100)}%)\n` +
+            'Mistaken words: ' + `${mistakenWordsCount}` + ` / ${notLearnedCount} (${Math.round(mistakenWordsCount / notLearnedCount * 100)}%)\n`;
     }
 
     loadItWords() {
