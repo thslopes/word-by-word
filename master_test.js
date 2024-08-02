@@ -134,6 +134,7 @@ for (const test of [
             practiceDate: new Date('2020-01-01'),
             practiceCount: test.practiceCount,
         };
+        master.loadDeck = () => { };
 
         // Act
         master.onAssert(test.isRight);
