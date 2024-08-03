@@ -1,5 +1,6 @@
 export default class Deck {
-    public hi(): void {
-        console.log("hi");
+    public currentWord: HTMLLabelElement;
+    constructor() {
+        this.currentWord = document.getElementById('current-word') as HTMLLabelElement;
     }
 }
