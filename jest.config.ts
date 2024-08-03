@@ -4,7 +4,8 @@ import type { Config } from 'jest';
 const config: Config = {
     globals: {
         "document": {
-            getElementById: (elementId: string) => {}
+            getElementById: (elementId: string) => {},
+            getElementsByClassName: (tagName: string) => []
         }
     },
     clearMocks: true,
