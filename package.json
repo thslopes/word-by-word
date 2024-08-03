@@ -1,0 +1,24 @@
+{
+  "name": "word-by-word",
+  "version": "1.0.0",
+  "description": "Learning a word by word is a simple way to learn a new language. This is a simple app that helps you to learn a new language by learning a word by word.",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc && browserify build/index.js -o bundle.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.1.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "browserify": "^17.0.0"
+  }
+}
