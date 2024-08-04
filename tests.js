@@ -2,14 +2,24 @@ let failed = 0;
 let failedTests = [];
 let failedAsserts = [];
 
-function runTests() {
+async function runTests() {
     let usp = new URLSearchParams(window.location.search);
 
     if (!usp.has('test')) {
         return;
     }
     for (const [testName, test] of tests) {
-        test();
+        try {
+            const t = test();
+            if (t instanceof Promise) {
+                await t;
+            }
+        } catch (e) {
+            console.log(`\u001b[31mFAILED\u001b[0m ${testName}`);
+            console.log(e);
+            failedTests.push(testName);
+            failed++;
+        }
         if (failedAsserts.length > 0) {
             failedTests.push(testName);
             failed++;
@@ -27,6 +37,19 @@ function runTests() {
     console.log(`\n\n${tests.size - failed}/${tests.size} tests passed`);
     if (failed > 0) {
         printFailedTests();
+    }
+
+    for (const [afterName, after] of afterTests) {
+        try {
+            const t = after();
+            if (t instanceof Promise) {
+                await t;
+            }
+            console.log(`\n${afterName}`);
+        } catch (e) {
+            console.log(`\u001b[31mFAILED\u001b[0m ${afterName}`);
+            console.log(e);
+        }
     }
 }
 
