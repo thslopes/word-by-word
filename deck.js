@@ -4,7 +4,7 @@ class Deck {
         this.options = document.getElementsByClassName("option");
         this.nextButton = document.getElementById("next-button");
         this.rightAnswerIndex = -1;
-        this.onAssertListener = () => {};
+        this.onAssertListener = async () => {};
     }
     setCards(word, otherOptions) {
         this.resetOptionsBackground();
@@ -36,13 +36,13 @@ class Deck {
         }
     }
 
-    assert(optionIndex) {
+    async assert(optionIndex) {
         this.options[this.rightAnswerIndex].classList.add("bg-success");
         if (optionIndex === this.rightAnswerIndex) {
-            this.onAssertListener.onAssert(true);
+            await this.onAssertListener.onAssert(true);
         } else {
             this.options[optionIndex].classList.add("bg-danger");
-            this.onAssertListener.onAssert(false);
+            await this.onAssertListener.onAssert(false);
         }
         // this.nextButton.hidden = false;
     }

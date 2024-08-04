@@ -25,14 +25,14 @@ class Master {
         this.words = [];
     }
 
-    onAssert(isRight) {
+    async onAssert(isRight) {
         const currentWord = this.words[this.exerciseIndex];
         let status = this.getNextStatus(currentWord, isRight);
         let practiceCount = 0;
         if (status === WordStatus.EXPERT) {
             practiceCount = currentWord.practiceCount ? currentWord.practiceCount + 1 : 1;
         }
-        this.cards.updateWord({
+        await this.cards.updateWord({
             ...currentWord,
             status: status,
             practiceDate: this.getNow(),
@@ -56,8 +56,8 @@ class Master {
             : word.status + 1;
     }
 
-    loadDeck() {
-        this.loadWords();
+    async loadDeck() {
+        await this.loadWords();
         const otherOptions = this.getOtherWords();
 
         this.deck.setCards(this.words[this.exerciseIndex], otherOptions);
@@ -77,7 +77,7 @@ class Master {
         return otherOptions;
     }
 
-    loadWords() {
+    async loadWords() {
         // only reload words if exerciseIndex is 0
         this.exerciseIndex = this.exerciseIndex % 10;
         if (this.exerciseIndex > 0) {
@@ -86,10 +86,12 @@ class Master {
         this.words = [];
 
         for (let config of exerciseConfig) {
-            this.words = this.words.concat(this.cards.getWordsByStatus(
-                config.status, 0,
+            const words = await this.cards.getWordsByStatus(
+                config.status,
                 config.count + this.words.length > 10 ? 10 - this.words.length : config.count,
-                config.sortBy));
+                config.sortBy);
+
+            this.words = this.words.concat(words);
             if (this.words.length >= 10) {
                 break;
             }
@@ -97,12 +99,12 @@ class Master {
 
         // if still less than 5, get not learned words
         if (this.words.length < 10) {
-            this.words = this.words.concat(this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, 0, 10 - this.words.length, SortBy.NEXT));
+            this.words = this.words.concat(await this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, 0, 10 - this.words.length, SortBy.NEXT));
         }
     }
 
-    loadItWords() {
-        this.cards.loadItWords();
+    async loadItWords() {
+        await this.cards.loadItWords();
         this.exerciseIndex = 0;
         this.loadDeck();
     }
@@ -112,8 +114,8 @@ class Master {
         return new Date().toISOString();
     }
 
-    removeWord() {
-        this.cards.updateWord({
+    async removeWord() {
+        await this.cards.updateWord({
             ...this.words[this.exerciseIndex],
             status: WordStatus.REMOVED,
             practiceDate: null,

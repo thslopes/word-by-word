@@ -5,19 +5,18 @@ class cardsMock {
         this.callIndex = 0;
         this.updatedWord = {};
     }
-    getWordsByStatus(status, skip = 0, limit = 1, sortBy = SortBy.NEXT) {
-        this.params.push([status, skip, limit, sortBy]);
-        return this.words[this.callIndex++];
-    }
-    getOneWordByStatus(status, sortBy = SortBy.NEXT) {
-        this.params.push([status, sortBy]);
-        return this.words[this.callIndex++];
+    getWordsByStatus(status, limit = 1, sortBy = SortBy.NEXT) {
+        this.params.push([status, limit, sortBy]);
+        const returnValue = this.words[this.callIndex++]
+        return new Promise((resolve) => resolve(returnValue));
     }
     updateWord(word) {
         this.updatedWord = word;
+        return new Promise((resolve) => resolve());
     }
     loadItWords() {
         this.loadItWordsCalled = true;
+        return new Promise((resolve) => resolve());
     }
 }
 
@@ -36,7 +35,7 @@ class deckMock {
     }
 }
 
-tests.set("should return mistaken for index 0", () => {
+tests.set("should return mistaken for index 0", async () => {
     // Arrange
     let master = new Master();
     const deck = new deckMock();
@@ -46,15 +45,15 @@ tests.set("should return mistaken for index 0", () => {
     master.exerciseIndex = 10;
 
     // Act
-    master.loadDeck();
+    await master.loadDeck();
 
     // Assert
-    assert([0, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
+    assert([0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
     assert(['mistaken'], [deck.word], 'mistaken');
     assert(0, master.exerciseIndex, 'reset index');
 });
 
-tests.set("should add learning words", () => {
+tests.set("should add learning words", async () => {
     // Arrange
     let master = new Master();
     const deck = new deckMock();
@@ -64,19 +63,19 @@ tests.set("should add learning words", () => {
     master.exerciseIndex = 0;
 
     // Act
-    master.loadDeck(0);
+    await master.loadDeck(0);
 
     // Assert
-    assert([WordStatus.MISTAKEN, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
-    assert([WordStatus.LEARNING, 0, 3, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
-    assert([WordStatus.LEARNED, 0, 2, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
-    assert([WordStatus.EXPERT, 0, 1, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
-    assert([WordStatus.NOT_LEARNED, 0, 6, SortBy.NEXT], cards.params[4], 'not learned 1');
-    assert([WordStatus.EXPERT, 0, 5, SortBy.PRACTICE_COUNT], cards.params[5], 'expert 2');
+    assert([WordStatus.MISTAKEN, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
+    assert([WordStatus.LEARNING, 3, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
+    assert([WordStatus.LEARNED, 2, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
+    assert([WordStatus.EXPERT, 1, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
+    assert([WordStatus.NOT_LEARNED, 6, SortBy.NEXT], cards.params[4], 'not learned 1');
+    assert([WordStatus.EXPERT, 5, SortBy.PRACTICE_COUNT], cards.params[5], 'expert 2');
     assert(['mistaken'], [deck.word], 'mistaken');
 });
 
-tests.set("should not reload words for index > 0", () => {
+tests.set("should not reload words for index > 0", async () => {
     // Arrange
     let master = new Master();
     const deck = new deckMock();
@@ -87,7 +86,7 @@ tests.set("should not reload words for index > 0", () => {
     master.words = ['mistaken', 'one', 'two', 'three', 'four'];
 
     // Act
-    master.loadDeck();
+    await master.loadDeck();
 
     // Assert
     assert(0, cards.params.length, 'cards called');
@@ -116,7 +115,7 @@ for (const test of [
     { currentStatus: 2, isRight: false, expectedStatus: 0, practiceCount: 0 },
     { currentStatus: 3, isRight: false, expectedStatus: 0, practiceCount: 0 },
 ]) {
-    tests.set(`should save ${test.expectedStatus} on onAssert ${test.isRight} for ${test.currentStatus}`, () => {
+    tests.set(`should save ${test.expectedStatus} on onAssert ${test.isRight} for ${test.currentStatus}`, async () => {
         // Arrange
         let master = new Master();
         const cards = new cardsMock([]);
@@ -137,7 +136,7 @@ for (const test of [
         master.loadDeck = () => loadDeckCalled = true;
 
         // Act
-        master.onAssert(test.isRight);
+        await master.onAssert(test.isRight);
 
         // Assert
         assert(expectedWord, cards.updatedWord, 'status');
@@ -145,7 +144,7 @@ for (const test of [
     });
 }
 
-tests.set("should load it words", () => {
+tests.set("should load it words", async () => {
     // Arrange
     let master = new Master();
     master.exerciseIndex = 2;
@@ -155,7 +154,7 @@ tests.set("should load it words", () => {
     master.cards = cards;
 
     // Act
-    master.loadItWords();
+    await master.loadItWords();
 
     // Assert
     assert(true, cards.loadItWordsCalled, 'it words');
@@ -163,7 +162,7 @@ tests.set("should load it words", () => {
     assert(true, loadDeckCalled, 'load deck');
 });
 
-tests.set("should update word woth status WordStatus.REMOVED", () => {
+tests.set("should update word woth status WordStatus.REMOVED", async () => {
     // Arrange
     let master = new Master();
     const cards = new cardsMock([]);
@@ -174,7 +173,7 @@ tests.set("should update word woth status WordStatus.REMOVED", () => {
     master.loadDeck = () => called = true;
 
     // Act
-    master.removeWord();
+    await master.removeWord();
 
     // Assert
     assert(1, master.exerciseIndex, 'index');
