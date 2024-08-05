@@ -32,127 +32,131 @@ let testWords =
         }
     ];
 
-tests.set("should create local storage database test", () => {
+tests.set("should create local storage database test", async () => {
     // Arrange
-    localStorage.clear();
     let cards = new Cards();
+    await cards.init();
+    await cards.db.clear(cards.wordsObjectStore);
+    await cards.db.clear(cards.currentBook);
 
     // Act
-    cards.init();
+    await cards.init();
 
     // Assert
-    const got = localStorage.getItem('wordsToLearn');
-    assert(JSON.stringify(words), got, 'database not created');
-    assert("default", localStorage.getItem('book'), 'database not created');
+    const got = await cards.db.getAll(cards.wordsObjectStore);
+    const book = await cards.db.get(cards.currentBook, 1);
+    assert(words, got, 'database not created');
+    assert("default", book.book, 'book not setted');
 });
 
-tests.set("should create local storage database test", () => {
+tests.set("should load it words db", async () => {
     // Arrange
     itWords = testWords.slice(0, 2);
-    localStorage.clear();
     let cards = new Cards();
+    await cards.init();
 
     // Act
-    cards.loadItWords();
+    await cards.loadItWords();
 
     // Assert
-    const got = localStorage.getItem('wordsToLearn');
-    assert(JSON.stringify(itWords), got, 'database not created');
-    assert("it", localStorage.getItem('book'), 'database not created');
+    const got = await cards.db.getAll(cards.wordsObjectStore);
+    const book = await cards.db.get(cards.currentBook, 1);
+
+    assert(itWords, got, 'database not created');
+    assert("it", book.book, 'book not setted');
 });
 
-tests.set("should not create local storage database when it already exists test", () => {
+tests.set("should not create local storage database when it already exists test", async () => {
     // Arrange
-    const fake = [{ word: 'test', translation: 'test', status: -1, practiceDate: '2024-01-25T00:00:00.000Z', index: 0 }];
-    localStorage.setItem('wordsToLearn', JSON.stringify(fake));
     let cards = new Cards();
+    await cards.init();
+    await cards.db.clear(cards.wordsObjectStore);
+    const fake = { word: 'test', translation: 'test', status: -1, practiceDate: '2024-01-25T00:00:00.000Z', index: 0 };
+    await cards.db.put(cards.wordsObjectStore, fake);
+    await cards.db.put(cards.currentBook, { id: 1, book: 'default' });
 
     // Act
-    cards.init();
+    await cards.init();
 
     // Assert
-    const got = localStorage.getItem('wordsToLearn')
-    assert(JSON.stringify(fake), got, 'database created');
+    const got = await cards.db.getAll(cards.wordsObjectStore);
+    assert([fake], got, 'database created');
 });
 
-tests.set("should get word by status", () => {
+tests.set("should get word by status and limit", async () => {
     // Arrange
+    let cards = new Cards();
+    await cards.init();
+    await cards.db.clear(cards.wordsObjectStore);
+    await cards.db.clear(cards.currentBook);
     words = testWords;
-    let cards = new Cards();
-    localStorage.setItem('wordsToLearn', JSON.stringify(words));
+    await cards.init();
 
     // Act
-    const got = cards.getOneWordByStatus(-1);
+    const got = await cards.getWordsByStatus(-1, 2);
 
     // Assert
-    assert(words[2], got, 'word not found');
+    assert([words[2],words[4]], got, 'status and limit');
 });
 
-tests.set("should get word by status and sort", () => {
+tests.set("should get word by status, limit and sort", async () => {
     // Arrange
+    let cards = new Cards();
+    await cards.init();
+    await cards.db.clear(cards.wordsObjectStore);
+    await cards.db.clear(cards.currentBook);
     words = testWords;
-    let cards = new Cards();
-    localStorage.setItem('wordsToLearn', JSON.stringify(words));
+    await cards.init();
 
     // Act
-    const got = cards.getOneWordByStatus(1, SortBy.LONGEST_STUDIED);
+    const got = await cards.getWordsByStatus(-1, 2, SortBy.LONGEST_STUDIED);
 
     // Assert
-    assert(words[3], got, 'word not found');
+    assert([words[5], words[2]], got, 'status limit and sort');
 });
 
-tests.set("should get word by status, skip and limit", () => {
+tests.set("should sort by practiceCount desc", async () => {
     // Arrange
+    let cards = new Cards();
+    await cards.init();
+    await cards.db.clear(cards.wordsObjectStore);
+    await cards.db.clear(cards.currentBook);
     words = testWords;
-    let cards = new Cards();
-    localStorage.setItem('wordsToLearn', JSON.stringify(words));
+    await cards.init();
 
     // Act
-    const got = cards.getWordsByStatus(-1, 1, 2);
+    const got = await cards.getWordsByStatus(3, 2, SortBy.PRACTICE_COUNT);
 
     // Assert
-    assert(words.slice(4, 6), got, 'skip and limit');
+    assert([words[7], words[8]], got, 'practice count desc');
 });
 
-tests.set("should get word by status, skip, limit and sort", () => {
-    // Arrange
-    words = testWords;
-    let cards = new Cards();
-    localStorage.setItem('wordsToLearn', JSON.stringify(words));
-
-    // Act
-    const got = cards.getWordsByStatus(-1, 1, 2, SortBy.LONGEST_STUDIED);
-
-    // Assert
-    assert([words[2], words[4]], got, 'skip, limit and sort');
-});
-
-tests.set("should sort by practiceCount desc", () => {
-    // Arrange
-    words = testWords;
-    let cards = new Cards();
-    localStorage.setItem('wordsToLearn', JSON.stringify(words));
-
-    // Act
-    const got = cards.getWordsByStatus(3, 0, 2, SortBy.PRACTICE_COUNT);
-
-    // Assert
-    assert([words[9], words[8]], got, 'practice count desc');
-});
-
-tests.set("should update word", () => {
+tests.set("should update word", async () => {
     // Arrange
     let cards = new Cards();
-    localStorage.setItem('wordsToLearn', JSON.stringify(words));
+    await cards.init();
+    await cards.db.clear(cards.wordsObjectStore);
+    await cards.db.clear(cards.currentBook);
+    await cards.init();
 
     // Act
-    cards.updateWord({ "word": "a", "translation": "um", "status": 1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2 });
+    await cards.updateWord({ "word": "a", "translation": "um", "status": 1, "practiceDate": "2024-01-25T00:00:00.000Z", "index": 2 });
 
     // Assert
-    const got = JSON.parse(localStorage.getItem('wordsToLearn')).find(word => word.word === 'a');
+    const got = await cards.db.get(cards.wordsObjectStore, 2);
     assert(1, got.status, 'word not updated');
 });
 
-tests.set("clear localStorage", () => {
+afterTests.set("clear localStorage", () => {
     localStorage.clear();
+});
+
+afterTests.set('dropDb', async () => {
+    await idb.deleteDB(cards.databaseName, {
+        blocked() {
+            console.log('blocked');
+        },
+    });
+
+    console.log('db dropped');
 });
