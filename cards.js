@@ -84,13 +84,14 @@ class Cards {
         const learnedPercent = Math.round((totalWordsCount - notStudiedCount) / totalWordsCount * 100);
         let progressBar = "";
         for (let i = 0; i < learnedPercent; i++) {
-            progressBar += ":";
+            progressBar += "■";
         }
         for (let i = 0; i < 100 - learnedPercent; i++) {
-            progressBar += ".";
+            progressBar += "□";
         }
         document.getElementById('learnedWords').innerText =
-            `Not studied words: ${notStudiedCount}` + ` / ${totalWordsCount} (${Math.round(notStudiedCount / totalWordsCount * 100)}%)\n${progressBar}`;
+            `Not studied words: ${notStudiedCount}` + ` / ${totalWordsCount} (${Math.round(notStudiedCount / totalWordsCount * 100)}%)`;
+        document.getElementById('progressBar').innerText = progressBar
     }
 
     async notStudiedCount() {
