@@ -79,6 +79,22 @@ class Cards {
         //     'Learning words: ' + `${learningWordsCount}` + ` / ${notLearnedCount} (${Math.round(learningWordsCount / notLearnedCount * 100)}%)\n` +
         //     'Mistaken words: ' + `${mistakenWordsCount}` + ` / ${notLearnedCount} (${Math.round(mistakenWordsCount / notLearnedCount * 100)}%)\n` +
         //     'Removed words: ' + `${removedWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(removedWordsCount / wordsToLearn.length * 100)}%)\n`;
+        const notStudiedCount = await this.notStudiedCount();
+        const totalWordsCount = await this.db.count(this.wordsObjectStore);
+        const learnedPercent = Math.round((totalWordsCount - notStudiedCount) / totalWordsCount * 100);
+        let progressBar = "";
+        for (let i = 0; i < learnedPercent; i++) {
+            progressBar += ":";
+        }
+        for (let i = 0; i < 100 - learnedPercent; i++) {
+            progressBar += ".";
+        }
+        document.getElementById('learnedWords').innerText =
+            `Not studied words: ${notStudiedCount}` + ` / ${totalWordsCount} (${Math.round(notStudiedCount / totalWordsCount * 100)}%)\n${progressBar}`;
+    }
+
+    async notStudiedCount() {
+        return await this.db.countFromIndex(this.wordsObjectStore, Indexes.LONGEST_STUDIED, "2024-01-25T00:00:00.000Z");
     }
 
     async loadItWords() {

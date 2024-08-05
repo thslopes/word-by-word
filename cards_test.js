@@ -35,6 +35,7 @@ let testWords =
 tests.set("should create local storage database test", async () => {
     // Arrange
     let cards = new Cards();
+    words = testWords;
     await cards.init();
     await cards.db.clear(cards.wordsObjectStore);
     await cards.db.clear(cards.currentBook);
@@ -47,6 +48,23 @@ tests.set("should create local storage database test", async () => {
     const book = await cards.db.get(cards.currentBook, 1);
     assert(words, got, 'database not created');
     assert("default", book.book, 'book not setted');
+});
+
+tests.set("range count count by practice date", async () => {
+    // Arrange
+    let cards = new Cards();
+    await cards.init();
+    await cards.db.clear(cards.wordsObjectStore);
+    await cards.db.clear(cards.currentBook);
+    words = testWords;
+    await cards.init();
+
+    // Act
+    const got = await cards.notStudiedCount();
+
+    // Assert
+    assert(5, got, 'range count by practice date');
+
 });
 
 tests.set("should load it words db", async () => {
