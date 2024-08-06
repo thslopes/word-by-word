@@ -61,7 +61,6 @@ class Master {
         const otherOptions = this.getOtherWords();
 
         this.deck.setCards(this.words[this.exerciseIndex], otherOptions);
-        speak();
     }
 
     // remove the current word and randomly select 3 other words

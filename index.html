@@ -15,7 +15,7 @@
     <div class="container-fluid d-flex flex-column justify-content-center">
         <h1 class="display-4 text-center">Word by Word</h1>
         <div class="text-center mt-4">
-            <label id="current-word" class="fw-bold fs-4"></label>
+            <label id="current-word" onclick="speak(this)" class="fw-bold fs-4"></label>
         </div>
         <div class="d-flex flex-column mt-4 justify-content-center align-items-center">
             <a href="#" class="option btn btn-lg btn-primary mb-2" onclick="deck.assert(0)" id="option-0"></a>
@@ -41,7 +41,6 @@
             // Select a voice
             const voices = speechSynthesis.getVoices();
             for (let i = 0; i < voices.length; i++) {
-                document.getElementById('learnedWords').innerText += '\n'+voices[i].lang;
                 if (voices[i].lang === 'en-US') {
                     utterance.voice = voices[i];
                     break;
