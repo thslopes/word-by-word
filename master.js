@@ -26,22 +26,25 @@ class Master {
     }
 
     async onAssert(isRight) {
-        const currentWord = this.words[this.exerciseIndex];
-        let status = this.getNextStatus(currentWord, isRight);
-        let practiceCount = 0;
-        if (status === WordStatus.EXPERT) {
-            practiceCount = currentWord.practiceCount ? currentWord.practiceCount + 1 : 1;
-        }
-        await this.cards.updateWord({
-            ...currentWord,
-            status: status,
-            practiceDate: this.getNow(),
-            practiceCount: practiceCount,
+        return new Promise(async (resolve) => {
+            const currentWord = this.words[this.exerciseIndex];
+            let status = this.getNextStatus(currentWord, isRight);
+            let practiceCount = 0;
+            if (status === WordStatus.EXPERT) {
+                practiceCount = currentWord.practiceCount ? currentWord.practiceCount + 1 : 1;
+            }
+            await this.cards.updateWord({
+                ...currentWord,
+                status: status,
+                practiceDate: this.getNow(),
+                practiceCount: practiceCount,
+            });
+            this.exerciseIndex++;
+            setTimeout(() => {
+                this.loadDeck();
+                resolve();
+            }, 500);
         });
-        this.exerciseIndex++;
-        setTimeout(() => {
-            this.loadDeck();
-        }, 500);
     }
 
     getNextStatus(word, isRight) {
@@ -106,7 +109,7 @@ class Master {
     async loadItWords() {
         await this.cards.loadItWords();
         this.exerciseIndex = 0;
-        this.loadDeck();
+        await this.loadDeck();
     }
 
     // just for tests
@@ -122,6 +125,6 @@ class Master {
             practiceCount: 0,
         });
         this.exerciseIndex++;
-        this.loadDeck();
+        await this.loadDeck();
     }
 }
