@@ -41,6 +41,7 @@
             // Select a voice
             const voices = speechSynthesis.getVoices();
             for (let i = 0; i < voices.length; i++) {
+                document.getElementById('learnedWords').innerText += '\n'+voices[i].lang;
                 if (voices[i].lang === 'en-US') {
                     utterance.voice = voices[i];
                     break;
@@ -52,7 +53,7 @@
         }
         let tests = new Map();
         let afterTests = new Map();
-        const version = 'v0.4.0';
+        const version = 'v0.4.1';
         document.getElementById('version').innerText = version;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>
