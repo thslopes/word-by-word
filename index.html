@@ -29,14 +29,27 @@
             <a href="#" onclick="master.loadItWords()">It Words</a>
             <a href="#" class="btn btn-danger" onclick="master.removeWord()">REMOVE</a>
         </div>
-        <div id="words" class="d-flex flex-column mt-4 justify-content-center align-items-left">
-            <a id="wordsTemplate" class="btn btn-lg btn-primary mb-2" hidden></a>
-        </div>
         <p id="progressBar" style="font-size: 3px;"></p>
         <span id="learnedWords"></span><br />
-      </div>
+    </div>
     <span id="version"></span>
     <script>
+        function speak() {
+            // Create a SpeechSynthesisUtterance
+            const utterance = new SpeechSynthesisUtterance(document.getElementById('current-word').innerText);
+
+            // Select a voice
+            const voices = speechSynthesis.getVoices();
+            for (let i = 0; i < voices.length; i++) {
+                if (voices[i].lang === 'en-US') {
+                    utterance.voice = voices[i];
+                    break;
+                }
+            }
+
+            // Speak the text
+            speechSynthesis.speak(utterance);
+        }
         let tests = new Map();
         let afterTests = new Map();
         const version = 'v0.4.0';
