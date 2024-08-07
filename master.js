@@ -40,8 +40,8 @@ class Master {
                 practiceCount: practiceCount,
             });
             this.exerciseIndex++;
-            setTimeout(() => {
-                this.loadDeck();
+            setTimeout(async () => {
+                await this.loadDeck();
                 resolve();
             }, 500);
         });
