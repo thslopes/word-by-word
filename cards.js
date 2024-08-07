@@ -62,8 +62,11 @@ class Cards {
         }
     }
 
-    async updateWord(word) {
+    async updateWord(word, reload = true) {
         await this.db.put(this.wordsObjectStore, word);
+        if (!reload) {
+            return;
+        }
         const notStudiedCount = await this.notStudiedCount();
         const totalWordsCount = await this.db.count(this.wordsObjectStore);
         const learnedPercent = Math.round((totalWordsCount - notStudiedCount) / totalWordsCount * 100);
