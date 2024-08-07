@@ -37,6 +37,7 @@ class Cards {
     }
 
     async getWordsByStatus(status, limit = 1, sortBy = SortBy.NEXT) {
+        console.log("status = " + status);
         let wordsToLearn = await this.getCursor(sortBy);
         const words = [];
         for await (const cursor of wordsToLearn) {
@@ -63,22 +64,6 @@ class Cards {
 
     async updateWord(word) {
         await this.db.put(this.wordsObjectStore, word);
-        // let wordsToLearn = JSON.parse(localStorage.getItem('wordsToLearn'));
-        // let index = wordsToLearn.findIndex(w => w.index === word.index);
-        // wordsToLearn[index] = word;
-        // localStorage.setItem('wordsToLearn', JSON.stringify(wordsToLearn));
-        // const expertWords = wordsToLearn.filter(w => w.status === 3).length;
-        // const learnedWordsCount = wordsToLearn.filter(w => w.status === 2).length;
-        // const learningWordsCount = wordsToLearn.filter(w => w.status === 1).length;
-        // const mistakenWordsCount = wordsToLearn.filter(w => w.status === 0).length;
-        // const notLearnedCount = wordsToLearn.filter(w => w.status === -1).length;
-        // const removedWordsCount = wordsToLearn.filter(w => w.status === -2).length;
-        // document.getElementById('learnedWords').innerText =
-        //     `Expert words: ${expertWords}` + ` / ${notLearnedCount} (${Math.round(expertWords / notLearnedCount * 100)}%)\n` +
-        //     'Learned words: ' + `${learnedWordsCount}` + ` / ${notLearnedCount} (${Math.round(learnedWordsCount / notLearnedCount * 100)}%)\n` +
-        //     'Learning words: ' + `${learningWordsCount}` + ` / ${notLearnedCount} (${Math.round(learningWordsCount / notLearnedCount * 100)}%)\n` +
-        //     'Mistaken words: ' + `${mistakenWordsCount}` + ` / ${notLearnedCount} (${Math.round(mistakenWordsCount / notLearnedCount * 100)}%)\n` +
-        //     'Removed words: ' + `${removedWordsCount}` + ` / ${wordsToLearn.length} (${Math.round(removedWordsCount / wordsToLearn.length * 100)}%)\n`;
         const notStudiedCount = await this.notStudiedCount();
         const totalWordsCount = await this.db.count(this.wordsObjectStore);
         const learnedPercent = Math.round((totalWordsCount - notStudiedCount) / totalWordsCount * 100);

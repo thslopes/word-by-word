@@ -29,11 +29,31 @@
             <a href="#" onclick="loadItWords()">It Words</a>
             <a href="#" class="btn btn-danger" onclick="removeWord()">REMOVE</a>
         </div>
+        <br />
         <p id="progressBar" style="font-size: 3px;"></p>
         <span id="learnedWords"></span><br />
+        <button class="btn" onclick="showRemovedWords()">Show removed words</button>
     </div>
     <span id="version"></span>
     <script>
+        async function showRemovedWords() {
+            const removedWords = await cards.getWordsByStatus(WordStatus.REMOVED, 100000);
+            document.getElementById('learnedWords').innerText = "";
+            removedWords.forEach(word => {
+                const item = document.createElement('a');
+                item.innerText = word.word;
+                item.href = "#";
+                item.onclick = () => {
+                    cards.updateWord({
+                        ...word,
+                        status: WordStatus.NOT_LEARNED
+                    });
+                    item.remove();
+                };
+                document.getElementById('learnedWords').appendChild(item);
+                document.getElementById('learnedWords').appendChild(document.createElement('br'));
+            });
+        }
         // functions added to allow speaking the word
         async function loadDeck() {
             await master.loadDeck();
@@ -73,7 +93,7 @@
         }
         let tests = new Map();
         let afterTests = new Map();
-        const version = 'v0.4.3';
+        const version = 'v0.5.0';
         document.getElementById('version').innerText = version;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>
