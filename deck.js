@@ -1,6 +1,7 @@
 class Deck {
     constructor() {
         this.currentWord = document.getElementById("current-word");
+        this.currentWordStatus = document.getElementById("current-word-status");
         this.options = document.getElementsByClassName("option");
         this.nextButton = document.getElementById("next-button");
         this.rightAnswerIndex = -1;
@@ -24,9 +25,27 @@ class Deck {
     }
 
     setCurrentWord(word) {
-        this.currentWord.textContent = word.word;
+        this.currentWord.textContent = word.word
+        this.currentWordStatus.textContent = this.getSymbolByStatus(word.status);
         this.rightAnswerIndex = Math.floor(Math.random() * this.options.length);
         this.options[this.rightAnswerIndex].textContent = word.translation;
+    }
+
+    getSymbolByStatus(status) {
+        switch (status) {
+            case WordStatus.NOT_LEARNED:
+                return "(não estudado)";
+            case WordStatus.MISTAKEN:
+                return "(erro)";
+            case WordStatus.LEARNING:
+                return "(aprendendo)";
+            case WordStatus.LEARNED:
+                return "(aprendido)";
+            case WordStatus.EXPERT:
+                return "(expert)";
+            default:
+                return "";
+        }
     }
 
     resetOptionsBackground() {

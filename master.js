@@ -71,6 +71,10 @@ class Master {
         let otherWords = this.words.slice();
         otherWords.splice(this.exerciseIndex, 1);
 
+        if (otherWords.length <= 3) {
+            return otherWords;
+        }
+
         const otherOptions = [];
         for (let i = 0; i < 3; i++) {
             const idxToAdd = Math.floor(Math.random() * otherWords.length);
@@ -101,9 +105,9 @@ class Master {
         }
 
         // if still less than 5, get not learned words
-        if (this.words.length < 10) {
-            this.words = this.words.concat(await this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, 0, 10 - this.words.length, SortBy.NEXT));
-        }
+        // if (this.words.length < 10) {
+        //     this.words = this.words.concat(await this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, 0, 10 - this.words.length, SortBy.NEXT));
+        // }
     }
 
     async loadItWords() {
