@@ -15,6 +15,7 @@ class Cards {
         this.databaseName = 'words';
         this.wordsObjectStore = 'wordsToLearn';
         this.currentBook = "currentBook";
+        this.statuses = [];
     }
 
     async init() {
@@ -29,15 +30,27 @@ class Cards {
         });
 
         const currentBook = await this.db.get(this.currentBook, 1);
-        if (currentBook) {
-            return;
+        if (!currentBook) {
+            await this.saveWordsToDatabase(words, "default");
         }
 
-        await this.saveWordsToDatabase(words, "default");
+        await this.updateLearnedWordStatus();
+    }
+
+    async updateLearnedWordStatus() {
+        const allWords = await this.db.getAll(this.wordsObjectStore);
+        this.statuses = [];;
+        for (let word of allWords) {
+            this.statuses[word.index] = word.status;
+        }
+        for (let word of allWords) {
+            if (this.statuses[word.index] !== word.status) {
+                document.getElementById('learnedWords').innerText = "DEU RUIM!";
+            }
+        }
     }
 
     async getWordsByStatus(status, limit = 1, sortBy = SortBy.NEXT) {
-        console.log("status = " + status);
         let wordsToLearn = await this.getCursor(sortBy);
         const words = [];
         for await (const cursor of wordsToLearn) {
@@ -69,7 +82,12 @@ class Cards {
         }
         const notStudiedCount = await this.notStudiedCount();
         const totalWordsCount = await this.db.count(this.wordsObjectStore);
+        this.statuses[word.index] = word.status;
         const learnedPercent = Math.round((totalWordsCount - notStudiedCount) / totalWordsCount * 100);
+        const mistakenCount = this.statuses.filter(status => status === WordStatus.MISTAKEN).length;
+        const learningCount = this.statuses.filter(status => status === WordStatus.LEARNING).length;
+        const learnedCount = this.statuses.filter(status => status === WordStatus.LEARNED).length;
+        const expertCount = this.statuses.filter(status => status === WordStatus.EXPERT).length;
         let progressBar = "";
         for (let i = 0; i < learnedPercent; i++) {
             progressBar += "■";
@@ -78,7 +96,11 @@ class Cards {
             progressBar += "□";
         }
         document.getElementById('learnedWords').innerText =
-            `Not studied words: ${notStudiedCount}` + ` / ${totalWordsCount} (${Math.round(notStudiedCount / totalWordsCount * 100)}%)`;
+            `Not studied words: ${notStudiedCount}` + ` / ${totalWordsCount} (${Math.round(notStudiedCount / totalWordsCount * 100)}%)\n` +
+            `Mistaken: ${mistakenCount}` + ` / ${totalWordsCount} (${Math.round(mistakenCount / totalWordsCount * 100)}%)\n` +
+            `Learning: ${learningCount}` + ` / ${totalWordsCount} (${Math.round(learningCount / totalWordsCount * 100)}%)\n` +
+            `Learned: ${learnedCount}` + ` / ${totalWordsCount} (${Math.round(learnedCount / totalWordsCount * 100)}%)\n` +
+            `Expert: ${expertCount}` + ` / ${totalWordsCount} (${Math.round(expertCount / totalWordsCount * 100)}%)\n`;
         document.getElementById('progressBar').innerText = progressBar
     }
 
@@ -88,6 +110,7 @@ class Cards {
 
     async loadItWords() {
         await this.saveWordsToDatabase(itWords, "it");
+        this.updateLearnedWordStatus();
     }
 
     async saveWordsToDatabase(toadd, book) {
