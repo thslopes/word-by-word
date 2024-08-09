@@ -111,7 +111,7 @@ tests.set("should get word by status and limit", async () => {
     await cards.init();
 
     // Act
-    const got = await cards.getWordsByStatus(-1, 2);
+    const got = await cards.getWordsByStatus(-1, 0, 2);
 
     // Assert
     assert([words[2],words[4]], got, 'status and limit');
@@ -127,7 +127,7 @@ tests.set("should get word by status, limit and sort", async () => {
     await cards.init();
 
     // Act
-    const got = await cards.getWordsByStatus(-1, 2, SortBy.LONGEST_STUDIED);
+    const got = await cards.getWordsByStatus(-1, 0, 2, SortBy.LONGEST_STUDIED);
 
     // Assert
     assert([words[5], words[2]], got, 'status limit and sort');
@@ -143,7 +143,7 @@ tests.set("should sort by practiceCount desc", async () => {
     await cards.init();
 
     // Act
-    const got = await cards.getWordsByStatus(3, 2, SortBy.PRACTICE_COUNT);
+    const got = await cards.getWordsByStatus(3, 0, 2, SortBy.PRACTICE_COUNT);
 
     // Assert
     assert([words[7], words[8]], got, 'practice count desc');

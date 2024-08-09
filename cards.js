@@ -50,11 +50,15 @@ class Cards {
         }
     }
 
-    async getWordsByStatus(status, limit = 1, sortBy = SortBy.NEXT) {
+    async getWordsByStatus(status, skip = 0, limit = 1, sortBy = SortBy.NEXT) {
         let wordsToLearn = await this.getCursor(sortBy);
         const words = [];
         for await (const cursor of wordsToLearn) {
             if (cursor.value.status === status) {
+                if (skip > 0) {
+                    skip--;
+                    continue;
+                }
                 words.push(cursor.value);
                 if (words.length >= limit) {
                     break;

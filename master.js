@@ -8,12 +8,12 @@ const WordStatus = {
 };
 
 const exerciseConfig = [
-    { status: WordStatus.MISTAKEN, count: 10, sortBy: SortBy.LONGEST_STUDIED },
-    { status: WordStatus.LEARNING, count: 2, sortBy: SortBy.LONGEST_STUDIED },
-    { status: WordStatus.LEARNED, count: 3, sortBy: SortBy.LONGEST_STUDIED },
-    { status: WordStatus.EXPERT, count: 4, sortBy: SortBy.PRACTICE_COUNT },
-    { status: WordStatus.NOT_LEARNED, count: 2, sortBy: SortBy.NEXT },
-    { status: WordStatus.EXPERT, count: 10, sortBy: SortBy.PRACTICE_COUNT },
+    { status: WordStatus.MISTAKEN, skip: 0, count: 10, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.LEARNING, skip: 0, count: 2, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.LEARNED, skip: 0, count: 3, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.EXPERT, skip: 0, count: 4, sortBy: SortBy.PRACTICE_COUNT },
+    { status: WordStatus.NOT_LEARNED, skip: 0, count: 2, sortBy: SortBy.NEXT },
+    { status: WordStatus.EXPERT, skip: 4, count: 10, sortBy: SortBy.PRACTICE_COUNT },
 ];
 
 class Master {
@@ -95,6 +95,7 @@ class Master {
         for (let config of exerciseConfig) {
             const words = await this.cards.getWordsByStatus(
                 config.status,
+                config.skip,
                 config.count + this.words.length > 10 ? 10 - this.words.length : config.count,
                 config.sortBy);
 
@@ -103,11 +104,6 @@ class Master {
                 break;
             }
         }
-
-        // if still less than 5, get not learned words
-        // if (this.words.length < 10) {
-        //     this.words = this.words.concat(await this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, 0, 10 - this.words.length, SortBy.NEXT));
-        // }
     }
 
     async loadItWords() {

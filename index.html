@@ -38,7 +38,7 @@
     <span id="version"></span>
     <script>
         async function showRemovedWords() {
-            const removedWords = await cards.getWordsByStatus(WordStatus.REMOVED, 100000);
+            const removedWords = await cards.getWordsByStatus(WordStatus.REMOVED, 0, 100000);
             document.getElementById('learnedWords').innerText = "";
             removedWords.forEach(word => {
                 const item = document.createElement('a');
@@ -96,7 +96,7 @@
         }
         let tests = new Map();
         let afterTests = new Map();
-        const version = 'v0.6.1';
+        const version = 'v0.6.2';
         document.getElementById('version').innerText = version;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>

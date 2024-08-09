@@ -5,8 +5,8 @@ class cardsMock {
         this.callIndex = 0;
         this.updatedWord = {};
     }
-    getWordsByStatus(status, limit = 1, sortBy = SortBy.NEXT) {
-        this.params.push([status, limit, sortBy]);
+    getWordsByStatus(status, skip = 0, limit = 1, sortBy = SortBy.NEXT) {
+        this.params.push([status, skip, limit, sortBy]);
         const returnValue = this.words[this.callIndex++]
         return new Promise((resolve) => resolve(returnValue));
     }
@@ -48,7 +48,7 @@ tests.set("should return mistaken for index 0", async () => {
     await master.loadDeck();
 
     // Assert
-    assert([0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
+    assert([0, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
     assert(['mistaken'], [deck.word], 'mistaken');
     assert(0, master.exerciseIndex, 'reset index');
 });
@@ -66,12 +66,12 @@ tests.set("should add learning words", async () => {
     await master.loadDeck(0);
 
     // Assert
-    assert([WordStatus.MISTAKEN, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
-    assert([WordStatus.LEARNING, 2, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
-    assert([WordStatus.LEARNED, 3, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
-    assert([WordStatus.EXPERT, 4, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
-    assert([WordStatus.NOT_LEARNED, 2, SortBy.NEXT], cards.params[4], 'not learned 1');
-    assert([WordStatus.EXPERT, 5, SortBy.PRACTICE_COUNT], cards.params[5], 'expert 2');
+    assert([WordStatus.MISTAKEN, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
+    assert([WordStatus.LEARNING, 0, 2, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
+    assert([WordStatus.LEARNED, 0, 3, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
+    assert([WordStatus.EXPERT, 0, 4, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
+    assert([WordStatus.NOT_LEARNED, 0, 2, SortBy.NEXT], cards.params[4], 'not learned 1');
+    assert([WordStatus.EXPERT, 4, 5, SortBy.PRACTICE_COUNT], cards.params[5], 'expert 2');
     assert(['mistaken'], [deck.word], 'mistaken');
 });
 
