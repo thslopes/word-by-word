@@ -39,7 +39,14 @@ tests.set("should return mistaken for index 0", async () => {
     // Arrange
     let master = new Master();
     const deck = new deckMock();
-    const cards = new cardsMock([['mistaken', 'one', 'two', 'three', 'four']]);
+    const cards = new cardsMock([
+        [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }],
+        [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }],
+        [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }],
+        [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }],
+        [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }],
+        [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }],
+    ]);
     master.deck = deck;
     master.cards = cards;
     master.exerciseIndex = 10;
@@ -49,7 +56,7 @@ tests.set("should return mistaken for index 0", async () => {
 
     // Assert
     assert([0, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'status');
-    assert(['mistaken'], [deck.word], 'mistaken');
+    assert([{ word: 'mistaken', translation: "mistaken" }], [deck.word], 'mistaken');
     assert(0, master.exerciseIndex, 'reset index');
 });
 
@@ -57,7 +64,9 @@ tests.set("should add learning words", async () => {
     // Arrange
     let master = new Master();
     const deck = new deckMock();
-    const cards = new cardsMock([['mistaken'], ['one'], ['two'], ['three'], ['four']]);
+    const cards = new cardsMock([
+        [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }],
+        [],[],[],[],[],[]]);
     master.deck = deck;
     master.cards = cards;
     master.exerciseIndex = 0;
@@ -72,7 +81,7 @@ tests.set("should add learning words", async () => {
     assert([WordStatus.EXPERT, 0, 4, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
     assert([WordStatus.NOT_LEARNED, 0, 2, SortBy.NEXT], cards.params[4], 'not learned 1');
     assert([WordStatus.EXPERT, 4, 5, SortBy.PRACTICE_COUNT], cards.params[5], 'expert 2');
-    assert(['mistaken'], [deck.word], 'mistaken');
+    assert([{ word: 'mistaken', translation: "mistaken" }], [deck.word], 'mistaken');
 });
 
 tests.set("should not reload words for index > 0", async () => {
@@ -83,14 +92,14 @@ tests.set("should not reload words for index > 0", async () => {
     master.deck = deck;
     master.cards = cards;
     master.exerciseIndex = 1;
-    master.words = ['mistaken', 'one', 'two', 'three', 'four'];
+    master.words = [{ word: 'mistaken', translation: "mistaken" }, { word: 'one', translation: "one" }, { word: 'two', translation: "two" }, { word: 'three', translation: "three" }, { word: 'four', translation: "four" }];
 
     // Act
     await master.loadDeck();
 
     // Assert
     assert(0, cards.params.length, 'cards called');
-    assert(['one'], [deck.word], 'one');
+    assert([{ word: 'one', translation: "one" }], [deck.word], 'one');
 });
 
 tests.set("should register for onAssert event", () => {

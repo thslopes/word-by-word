@@ -76,10 +76,16 @@ class Master {
         }
 
         const otherOptions = [];
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; otherOptions.length < 3; i++) {
             const idxToAdd = Math.floor(Math.random() * otherWords.length);
+            if (otherWords[idxToAdd].translation === this.words[this.exerciseIndex].translation) {
+                continue;
+            }
             otherOptions.push(otherWords[idxToAdd]);
             otherWords.splice(idxToAdd, 1);
+            if (i > 9) {
+                break;
+            }
         }
         return otherOptions;
     }
