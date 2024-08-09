@@ -9,10 +9,10 @@ const WordStatus = {
 
 const exerciseConfig = [
     { status: WordStatus.MISTAKEN, count: 10, sortBy: SortBy.LONGEST_STUDIED },
-    { status: WordStatus.LEARNING, count: 3, sortBy: SortBy.LONGEST_STUDIED },
-    { status: WordStatus.LEARNED, count: 2, sortBy: SortBy.LONGEST_STUDIED },
-    { status: WordStatus.EXPERT, count: 1, sortBy: SortBy.PRACTICE_COUNT },
-    { status: WordStatus.NOT_LEARNED, count: 10, sortBy: SortBy.NEXT },
+    { status: WordStatus.LEARNING, count: 2, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.LEARNED, count: 3, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.EXPERT, count: 4, sortBy: SortBy.PRACTICE_COUNT },
+    { status: WordStatus.NOT_LEARNED, count: 2, sortBy: SortBy.NEXT },
     { status: WordStatus.EXPERT, count: 10, sortBy: SortBy.PRACTICE_COUNT },
 ];
 
@@ -82,7 +82,7 @@ class Master {
 
     async loadWords() {
         // only reload words if exerciseIndex is 0
-        this.exerciseIndex = this.exerciseIndex % 10;
+        this.exerciseIndex = this.words.length ? this.exerciseIndex % this.words.length : 0;
         if (this.exerciseIndex > 0) {
             return;
         }

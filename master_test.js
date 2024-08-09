@@ -67,10 +67,10 @@ tests.set("should add learning words", async () => {
 
     // Assert
     assert([WordStatus.MISTAKEN, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
-    assert([WordStatus.LEARNING, 3, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
-    assert([WordStatus.LEARNED, 2, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
-    assert([WordStatus.EXPERT, 1, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
-    assert([WordStatus.NOT_LEARNED, 6, SortBy.NEXT], cards.params[4], 'not learned 1');
+    assert([WordStatus.LEARNING, 2, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
+    assert([WordStatus.LEARNED, 3, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
+    assert([WordStatus.EXPERT, 4, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
+    assert([WordStatus.NOT_LEARNED, 2, SortBy.NEXT], cards.params[4], 'not learned 1');
     assert([WordStatus.EXPERT, 5, SortBy.PRACTICE_COUNT], cards.params[5], 'expert 2');
     assert(['mistaken'], [deck.word], 'mistaken');
 });
