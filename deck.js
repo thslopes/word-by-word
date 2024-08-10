@@ -52,6 +52,7 @@ class Deck {
         for (let option of this.options) {
             option.classList.remove("bg-success");
             option.classList.remove("bg-danger");
+            option.textContent = "";
         }
     }
 

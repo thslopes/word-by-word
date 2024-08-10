@@ -130,7 +130,9 @@ class Master {
             practiceDate: null,
             practiceCount: 0,
         });
-        this.exerciseIndex++;
+        this.words.splice(this.exerciseIndex, 1);
+        const notLearnedCount = this.words.filter(word => word.status === WordStatus.NOT_LEARNED).length;
+        this.words = this.words.concat(await this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, notLearnedCount, 1, SortBy.NEXT));
         await this.loadDeck();
     }
 }

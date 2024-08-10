@@ -185,7 +185,7 @@ tests.set("should update word woth status WordStatus.REMOVED", async () => {
     await master.removeWord();
 
     // Assert
-    assert(1, master.exerciseIndex, 'index');
+    assert(0, master.exerciseIndex, 'index');
     assert(true, called, 'load deck');
     assert(WordStatus.REMOVED, cards.updatedWord.status, 'status');
 });
