@@ -9,7 +9,7 @@ const WordStatus = {
 
 const exerciseConfig = [
     { status: WordStatus.MISTAKEN, skip: 0, count: 10, sortBy: SortBy.LONGEST_STUDIED },
-    { status: WordStatus.LEARNING, skip: 0, count: 2, sortBy: SortBy.LONGEST_STUDIED },
+    { status: WordStatus.LEARNING, skip: 0, count: 3, sortBy: SortBy.LONGEST_STUDIED },
     { status: WordStatus.LEARNED, skip: 0, count: 3, sortBy: SortBy.LONGEST_STUDIED },
     { status: WordStatus.EXPERT, skip: 0, count: 4, sortBy: SortBy.PRACTICE_COUNT },
     { status: WordStatus.NOT_LEARNED, skip: 0, count: 2, sortBy: SortBy.NEXT },
