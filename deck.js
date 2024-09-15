@@ -31,7 +31,7 @@ class Deck {
         for (let option of item.children) {
             option.hidden = hvalue;
         }
-        
+
     }
 
     setOtherWords(otherOptions) {
@@ -59,10 +59,35 @@ class Deck {
     setCurrentWord(word) {
         this.currentWord.textContent = word.word
         this.currentWordStatus.textContent = this.getSymbolByStatus(word.status);
-        this.phrase.textContent = word.phrase;
+        this.phrase.textContent = this.resumePhrase(word);
         this.rightAnswerIndex = Math.floor(Math.random() * this.options.length);
         this.options[this.rightAnswerIndex].textContent = word.translation;
         this.answer.translation = word.translation;
+    }
+
+    resumePhrase(word) {
+        if (word.phrase === undefined) {
+            return "";
+        }
+        const phraseMargin = 30;
+        let wordIndex = this.getWordIndexByRegexCaseInsensitive(word.word, word.phrase);
+        let phrase = word.phrase;
+        console.log(phrase);
+        if (wordIndex > phraseMargin) {
+            phrase = "..." + phrase.substring(wordIndex - phraseMargin);
+            wordIndex = phraseMargin;
+        }
+        let wordLength = word.word.length;
+        let wordEndIndex = wordIndex + wordLength;
+        if (wordEndIndex < phrase.length - phraseMargin) {
+            phrase = phrase.substring(0, wordEndIndex + phraseMargin) + "...";
+        }
+        return phrase;
+    }
+
+    getWordIndexByRegexCaseInsensitive(word, phrase) {
+        let regex = new RegExp(word, "i");
+        return phrase.search(regex);
     }
 
     getSymbolByStatus(status) {
