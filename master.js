@@ -7,6 +7,8 @@ const WordStatus = {
     EXPERT: 3,
 };
 
+const discursiveStatus = [WordStatus.LEARNED, WordStatus.EXPERT];
+
 const exerciseConfig = [
     { status: WordStatus.MISTAKEN, skip: 0, count: 10, sortBy: SortBy.LONGEST_STUDIED },
     { status: WordStatus.LEARNING, skip: 0, count: 3, sortBy: SortBy.LONGEST_STUDIED },
@@ -63,7 +65,9 @@ class Master {
         await this.loadWords();
         const otherOptions = this.getOtherWords();
 
-        this.deck.setCards(this.words[this.exerciseIndex], otherOptions);
+        const currentWord = this.words[this.exerciseIndex];
+        const isDiscursive = discursiveStatus.includes(currentWord.status);
+        this.deck.setCards(currentWord, otherOptions, isDiscursive);
     }
 
     // remove the current word and randomly select 3 other words
