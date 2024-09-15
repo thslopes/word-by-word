@@ -180,7 +180,6 @@ tests.set("should update word with status WordStatus.REMOVED", async () => {
     master.words = [{ word: 'mistaken', status: WordStatus.NOT_LEARNED }];
     let called = false;
     master.loadDeck = () => called = true;
-    master.deck.validateRemove = () => true;
 
     // Act
     await master.removeWord();
@@ -191,19 +190,3 @@ tests.set("should update word with status WordStatus.REMOVED", async () => {
     assert(WordStatus.REMOVED, cards.updatedWord.status, 'status');
 });
 
-tests.set("should not update word when validateRemove return false", async () => {
-    // Arrange
-    let master = new Master();
-    let updateCalled = false;
-    master.cards.updateWord = () => { updateCalled = true; };
-    let called = false;
-    master.loadDeck = () => called = true;
-    master.deck.validateRemove = () => false;
-
-    // Act
-    await master.removeWord();
-
-    // Assert
-    assert(false, called, 'load deck');
-    assert(false, updateCalled, 'update word');
-});

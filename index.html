@@ -33,7 +33,6 @@
             <p id="feedback">Escolha a opção correta!</p>
             <a href="#" id="next-button" onclick="loadDeck()" hidden="true">next</a>
             <a href="#" onclick="loadItWords()">It Words</a>
-            <input type="text" id="toRemove" placeholder="Word" />
             <a href="#" class="btn btn-danger" onclick="removeWord()">REMOVE</a>
         </div>
         <br />
@@ -75,8 +74,10 @@
         }
 
         async function removeWord() {
-            await master.removeWord();
-            speak();
+            if (confirm(`Are you sure you want to remove the word "${document.getElementById('current-word').innerText}"?`)) {
+                await master.removeWord();
+                speak();
+            }
         }
 
         async function onAssert(params) {
@@ -107,7 +108,7 @@
         }
         let tests = new Map();
         let afterTests = new Map();
-        const version = 'v0.7.0';
+        const version = 'v0.7.1';
         document.getElementById('version').innerText = version;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>
