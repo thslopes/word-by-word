@@ -69,10 +69,11 @@ class Deck {
         if (word.phrase === undefined) {
             return "";
         }
-        const phraseMargin = 30;
+        const phraseMargin = 40;
         let wordIndex = this.getWordIndexByRegexCaseInsensitive(word.word, word.phrase);
         let phrase = word.phrase;
         console.log(phrase);
+        console.log(phrase.length);
         if (wordIndex > phraseMargin) {
             phrase = "..." + phrase.substring(wordIndex - phraseMargin);
             wordIndex = phraseMargin;
@@ -86,7 +87,7 @@ class Deck {
     }
 
     getWordIndexByRegexCaseInsensitive(word, phrase) {
-        let regex = new RegExp(word, "i");
+        let regex = new RegExp(`\\b${word}\\b`, "i");
         return phrase.search(regex);
     }
 
