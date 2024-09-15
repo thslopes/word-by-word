@@ -12,6 +12,7 @@ class Deck {
         this.multipleChoice = document.getElementById("multiple-choice");
         this.discursive = document.getElementById("discursive");
     }
+
     setCards(word, otherOptions, isDiscursive) {
         this.resetOptionsBackground();
         this.setCurrentWord(word);
@@ -99,6 +100,5 @@ class Deck {
             this.options[optionIndex].classList.add("bg-danger");
             await this.onAssertListener.onAssert(false);
         }
-        // this.nextButton.hidden = false;
     }
 }

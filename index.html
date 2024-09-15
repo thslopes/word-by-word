@@ -39,9 +39,20 @@
         <p id="progressBar" style="font-size: 3px;"></p>
         <span id="learnedWords"></span><br />
         <button class="btn" onclick="showRemovedWords()">Show removed words</button>
+        <button class="btn" onclick="exportData()">EXPORT</button>
+        <button class="btn" onclick="importData()">IMPORT</button>
     </div>
     <span id="version"></span>
     <script>
+        async function exportData() {
+            await cards.export();
+            speak();
+        }
+        async function importData() {
+            await cards.import();
+            speak();
+        }
+            
         async function showRemovedWords() {
             const removedWords = await cards.getWordsByStatus(WordStatus.REMOVED, 0, 100000);
             document.getElementById('learnedWords').innerText = "";

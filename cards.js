@@ -84,9 +84,13 @@ class Cards {
         if (!reload) {
             return;
         }
+        this.statuses[word.index] = word.status;
+        await this.updateProgressBar();
+    }
+
+    async updateProgressBar() {
         const notStudiedCount = await this.notStudiedCount();
         const totalWordsCount = await this.db.count(this.wordsObjectStore);
-        this.statuses[word.index] = word.status;
         const learnedPercent = Math.round((totalWordsCount - notStudiedCount) / totalWordsCount * 100);
         const mistakenCount = this.statuses.filter(status => status === WordStatus.MISTAKEN).length;
         const learningCount = this.statuses.filter(status => status === WordStatus.LEARNING).length;
@@ -105,11 +109,44 @@ class Cards {
             `Learning: ${learningCount}` + ` / ${totalWordsCount} (${Math.round(learningCount / totalWordsCount * 100)}%)\n` +
             `Learned: ${learnedCount}` + ` / ${totalWordsCount} (${Math.round(learnedCount / totalWordsCount * 100)}%)\n` +
             `Expert: ${expertCount}` + ` / ${totalWordsCount} (${Math.round(expertCount / totalWordsCount * 100)}%)\n`;
-        document.getElementById('progressBar').innerText = progressBar
+        document.getElementById('progressBar').innerText = progressBar;
     }
 
     async notStudiedCount() {
         return await this.db.countFromIndex(this.wordsObjectStore, Indexes.LONGEST_STUDIED, "2024-01-25T00:00:00.000Z");
+    }
+
+    async export() {
+        const allWords = await this.db.getAll(this.wordsObjectStore);
+        const blob = new Blob([JSON.stringify(allWords)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'words.json';
+        a.click();
+    }
+
+    async import() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json';
+        input.click();
+        input.onchange = async () => {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const words = JSON.parse(reader.result);
+                await this.db.clear(this.wordsObjectStore);
+                const tx = this.db.transaction(this.wordsObjectStore, 'readwrite');
+                for (let word of words) {
+                    tx.store.put(word);
+                }
+                await tx.done;
+                await this.updateLearnedWordStatus();
+            };
+            reader.readAsText(file);
+        };
+        await this.updateProgressBar();
     }
 
     async loadItWords() {
