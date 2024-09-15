@@ -124,6 +124,9 @@ class Master {
     }
 
     async removeWord() {
+        if (!this.deck.validateRemove()) {
+            return;
+        }
         await this.cards.updateWord({
             ...this.words[this.exerciseIndex],
             status: WordStatus.REMOVED,

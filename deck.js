@@ -3,6 +3,7 @@ class Deck {
         this.currentWord = document.getElementById("current-word");
         this.currentWordStatus = document.getElementById("current-word-status");
         this.phrase = document.getElementById("phrase");
+        this.toRemoveInputCheck = document.getElementById("toRemove");
         this.options = document.getElementsByClassName("option");
         this.nextButton = document.getElementById("next-button");
         this.rightAnswerIndex = -1;
@@ -25,11 +26,23 @@ class Deck {
         }
     }
 
+    validateRemove() {
+        if (this.toRemoveInputCheck.translation !== this.toRemoveInputCheck.value) {
+            // set border-color red
+            this.toRemoveInputCheck.style.borderColor = 'red';
+            return false;
+        }
+        return true;
+    }
+
     setCurrentWord(word) {
         this.currentWord.textContent = word.word
         this.currentWordStatus.textContent = this.getSymbolByStatus(word.status);
         this.phrase.textContent = word.phrase;
         this.rightAnswerIndex = Math.floor(Math.random() * this.options.length);
+        this.toRemoveInputCheck.translation = word.translation;
+        this.toRemoveInputCheck.value = "";
+        this.toRemoveInputCheck.style.borderColor = 'aliceblue';
         this.options[this.rightAnswerIndex].textContent = word.translation;
     }
 

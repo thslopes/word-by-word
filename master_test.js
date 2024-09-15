@@ -76,7 +76,7 @@ tests.set("should add learning words", async () => {
 
     // Assert
     assert([WordStatus.MISTAKEN, 0, 10, SortBy.LONGEST_STUDIED], cards.params[0], 'mistaken 5');
-    assert([WordStatus.LEARNING, 0, 2, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
+    assert([WordStatus.LEARNING, 0, 3, SortBy.LONGEST_STUDIED], cards.params[1], 'learning 1');
     assert([WordStatus.LEARNED, 0, 3, SortBy.LONGEST_STUDIED], cards.params[2], 'learned 1');
     assert([WordStatus.EXPERT, 0, 4, SortBy.PRACTICE_COUNT], cards.params[3], 'expert 1');
     assert([WordStatus.NOT_LEARNED, 0, 2, SortBy.NEXT], cards.params[4], 'not learned 1');
@@ -171,7 +171,7 @@ tests.set("should load it words", async () => {
     assert(true, loadDeckCalled, 'load deck');
 });
 
-tests.set("should update word woth status WordStatus.REMOVED", async () => {
+tests.set("should update word with status WordStatus.REMOVED", async () => {
     // Arrange
     let master = new Master();
     const cards = new cardsMock([]);
@@ -180,6 +180,7 @@ tests.set("should update word woth status WordStatus.REMOVED", async () => {
     master.words = [{ word: 'mistaken', status: WordStatus.NOT_LEARNED }];
     let called = false;
     master.loadDeck = () => called = true;
+    master.deck.validateRemove = () => true;
 
     // Act
     await master.removeWord();
@@ -188,4 +189,21 @@ tests.set("should update word woth status WordStatus.REMOVED", async () => {
     assert(0, master.exerciseIndex, 'index');
     assert(true, called, 'load deck');
     assert(WordStatus.REMOVED, cards.updatedWord.status, 'status');
+});
+
+tests.set("should not update word when validateRemove return false", async () => {
+    // Arrange
+    let master = new Master();
+    let updateCalled = false;
+    master.cards.updateWord = () => { updateCalled = true; };
+    let called = false;
+    master.loadDeck = () => called = true;
+    master.deck.validateRemove = () => false;
+
+    // Act
+    await master.removeWord();
+
+    // Assert
+    assert(false, called, 'load deck');
+    assert(false, updateCalled, 'update word');
 });
