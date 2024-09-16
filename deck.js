@@ -14,6 +14,7 @@ class Deck {
     }
 
     setCards(word, otherOptions, isDiscursive) {
+        this.answer.value = "";
         this.resetOptionsBackground();
         this.setCurrentWord(word);
         this.setOtherWords(otherOptions);
@@ -46,14 +47,30 @@ class Deck {
     }
 
     async validateAnswer() {
-        if (this.answer.translation !== this.answer.value) {
-            // set border-color red
-            this.validateAnswerBtn.classList.add("bg-danger");
-            await this.onAssertListener.onAssert(false);
-        } else {
+        if (this.checkTranslation(this.answer.translation, this.answer.value)) {
             this.validateAnswerBtn.classList.add("bg-success");
             await this.onAssertListener.onAssert(true);
+        } else {
+            this.validateAnswerBtn.classList.add("bg-danger");
+            await this.onAssertListener.onAssert(false);
         }
+    }
+
+    checkTranslation(expected, answer) {
+        if (expected.indexOf("/") === -1) {
+            return this.compareWordsIgnoreCaseTrim(expected, answer);
+        }
+        let words = expected.split("/");
+        for (let word of words) {
+            if (this.compareWordsIgnoreCaseTrim(word, answer)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    compareWordsIgnoreCaseTrim(word1, word2) {
+        return word1.trim().toLowerCase() === word2.trim().toLowerCase();
     }
 
     setCurrentWord(word) {

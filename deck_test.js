@@ -91,3 +91,23 @@ tests.set("should add hidden class from element next", () => {
     deck.setCards(currentWord, otherWords);
     // assert(true, deck.nextButton.hasAttribute('hidden'), 'should add hidden class from element next');
 });
+
+for (let testCase of [
+    { translation: 'eu', answer: 'eu', expected: true },
+    { translation: 'eu', answer: 'e', expected: false },
+    { translation: 'eu', answer: 'Eu', expected: true },
+    { translation: 'tu/eu', answer: 'Eu', expected: true },
+    { translation: 'tu/eu', answer: 'Eu ', expected: true },
+    { translation: 'tu/eu ', answer: 'Eu ', expected: true },
+]) {
+    tests.set(`validate answer ${testCase.translation} ${testCase.answer} ${testCase.expected}`, () => {
+        // Arrange
+        deck = new Deck();
+
+        // Act
+        const got = deck.checkTranslation(testCase.translation, testCase.answer);
+
+        // Assert
+        assert(testCase.expected, got, `should validate answer ${testCase.translation} ${testCase.answer} ${testCase.expected}`);
+    });
+}

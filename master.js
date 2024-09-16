@@ -139,4 +139,9 @@ class Master {
         this.words = this.words.concat(await this.cards.getWordsByStatus(WordStatus.NOT_LEARNED, notLearnedCount, 1, SortBy.NEXT));
         await this.loadDeck();
     }
+
+    async editWord(translation) {
+        this.words[this.exerciseIndex].translation = translation;
+        await this.onAssert(true);
+    }
 }

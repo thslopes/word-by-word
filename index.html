@@ -35,6 +35,8 @@
             <a href="#" id="next-button" onclick="loadDeck()" hidden="true">next</a>
             <a href="#" onclick="loadItWords()">It Words</a>
             <a href="#" class="btn btn-danger" onclick="removeWord()">REMOVE</a>
+            <a href="#" class="btn btn-warning" onclick="editWord()">EDIT</a>
+            <input type="text" id="edit-word" />
         </div>
         <br />
         <p id="progressBar" style="font-size: 3px;"></p>
@@ -92,6 +94,16 @@
             }
         }
 
+        async function editWord() {
+            const editInput = document.getElementById('edit-word');
+            const newTranslation = editInput.value;
+            if (newTranslation) {
+                await master.editWord(newTranslation);
+                editInput.value = "";
+                speak();
+            }
+        }
+
         async function onAssert(params) {
             await deck.assert(params);
             speak();
@@ -120,7 +132,7 @@
         }
         let tests = new Map();
         let afterTests = new Map();
-        const version = 'v0.7.3';
+        const version = 'v0.8.0';
         document.getElementById('version').innerText = version;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>
