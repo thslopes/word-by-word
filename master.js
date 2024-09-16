@@ -144,4 +144,10 @@ class Master {
         this.words[this.exerciseIndex].translation = translation;
         await this.onAssert(true);
     }
+
+    translate() {
+        const article = this.words[this.exerciseIndex].phrase;
+        const url = `https://translate.google.com/?hl=pt-BR&tab=wT&sl=en&tl=pt&text=${article}&op=translate`;
+        window.open(url, '_blank');
+    }
 }
