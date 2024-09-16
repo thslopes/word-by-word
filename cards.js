@@ -138,8 +138,13 @@ class Cards {
                 const words = JSON.parse(reader.result);
                 await this.db.clear(this.wordsObjectStore);
                 const tx = this.db.transaction(this.wordsObjectStore, 'readwrite');
+                let i = 0;
                 for (let word of words) {
                     tx.store.put(word);
+                    i++;
+                    if (i % 100 === 0) {
+                        document.getElementById('learnedWords').innerText = `Imported ${i} words from ${words.length}`;
+                    }
                 }
                 await tx.done;
                 await this.updateLearnedWordStatus();
