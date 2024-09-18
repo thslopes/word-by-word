@@ -22,6 +22,7 @@ class Deck {
         if (isDiscursive) {
             this.setChildrenHidden(this.multipleChoice);
             this.setChildrenHidden(this.discursive, false);
+            this.answer.focus();
         } else {
             this.setChildrenHidden(this.discursive);
             this.setChildrenHidden(this.multipleChoice, false);
